@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rice-paper: #f3ede3;
+  --color-sandalwood: #d9b78c;
+  --color-agni-red: #8e392f;
+  --color-neel-green: #315955;
+  --color-background: #f3ede3;
+  --color-surface: #d9b78c;
+  --color-brand: #8e392f;
+  --color-action: #8e392f;
+  --color-foreground: #315955;
+  --color-border: #315955;
+  --color-focus: #8e392f;
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
