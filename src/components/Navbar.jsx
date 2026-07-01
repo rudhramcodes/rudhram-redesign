@@ -19,12 +19,42 @@ const navItems = [
 const duration = (ms) =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : ms;
 
-const animateGlass = (target, scale) =>
-  waapi.animate(target, {
-    transform: `scale(${scale})`,
-    duration: duration(160),
+const glassAnimations = new WeakMap();
+
+const runGlassAnimation = (target, options) => {
+  glassAnimations.get(target)?.cancel();
+  const animation = waapi.animate(target, options);
+  glassAnimations.set(target, animation);
+};
+
+const pressGlass = (event) => {
+  event.currentTarget.setPointerCapture(event.pointerId);
+  runGlassAnimation(event.currentTarget, {
+    transform: "scale(.96)",
+    duration: duration(80),
     ease: "out(3)",
   });
+};
+
+const releaseGlass = (event) => {
+  if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+    event.currentTarget.releasePointerCapture(event.pointerId);
+  }
+  runGlassAnimation(event.currentTarget, {
+    transform: "scale(1)",
+    duration: duration(240),
+    ease: "outElastic(.7, .6)",
+  });
+};
+
+const keyboardClick = (event) => {
+  if (event.detail !== 0) return;
+  runGlassAnimation(event.currentTarget, {
+    transform: ["scale(.96)", "scale(1)"],
+    duration: duration(280),
+    ease: "outElastic(.7, .6)",
+  });
+};
 
 function Chevron({ open }) {
   return (
@@ -73,12 +103,11 @@ export default function Navbar() {
     }
 
     const animation = waapi.animate(dropdownRef.current, {
-      opacity: active ? [0, 1] : [1, 0],
       transform: active
-        ? ["translateY(-6px) scale(.96)", "translateY(0) scale(1)"]
-        : ["translateY(0) scale(1)", "translateY(-6px) scale(.96)"],
-      duration: duration(active ? 240 : 160),
-      ease: "out(3)",
+        ? ["translateY(-10px) scale(.97)", "translateY(0) scale(1)"]
+        : ["translateY(0) scale(1)", "translateY(-10px) scale(.97)"],
+      duration: duration(active ? 280 : 160),
+      ease: "out(4)",
     });
 
     return () => animation.cancel();
@@ -92,7 +121,7 @@ export default function Navbar() {
   const hide = () => {
     hideTimeout.current = setTimeout(() => {
       setActive(null);
-    }, 200);
+    }, 320);
   };
 
   return (
@@ -100,18 +129,11 @@ export default function Navbar() {
       <div
         ref={navRef}
         className="
-          flex items-center gap-1 sm:gap-2 md:gap-6
+          liquid-glass relative flex items-center gap-1 sm:gap-2 md:gap-6
           px-3 sm:px-4 md:px-6 py-2
           pointer-events-auto
+          rounded-full
         "
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.07))",
-          backdropFilter: "blur(24px) saturate(180%)",
-          WebkitBackdropFilter: "blur(24px) saturate(180%)",
-          border: "1px solid rgba(255,255,255,0.28)",
-          borderRadius: "9999px",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.32), 0 12px 36px rgba(8,15,24,0.24)",
-        }}
       >
           <a href="#" className="mr-1 md:mr-4 flex-shrink-0">
             <img
@@ -134,23 +156,19 @@ export default function Navbar() {
                 <a
                   href={item.href}
                   className="
-                    relative flex items-center gap-0.5 md:gap-1
+                    glass-control relative flex items-center gap-0.5 md:gap-1
                     px-2 md:px-3 py-1.5 md:py-2
                     text-xs sm:text-sm font-medium
                     text-rice-paper/60 hover:text-rice-paper
-                    rounded-full border border-transparent
-                    hover:border-white/25 hover:bg-white/10
-                    hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_6px_20px_rgba(8,15,24,0.18)]
-                    focus-visible:outline-none focus-visible:border-white/35 focus-visible:bg-white/10
+                    rounded-full
+                    focus-visible:outline-none
                     transition-[color,background-color,border-color,box-shadow] duration-300
                     cursor-pointer select-none
                   "
-                  onPointerEnter={(event) => animateGlass(event.currentTarget, 1.04)}
-                  onPointerLeave={(event) => animateGlass(event.currentTarget, 1)}
-                  onPointerDown={(event) => animateGlass(event.currentTarget, 0.96)}
-                  onPointerUp={(event) => animateGlass(event.currentTarget, 1.04)}
-                  onFocus={(event) => animateGlass(event.currentTarget, 1.04)}
-                  onBlur={(event) => animateGlass(event.currentTarget, 1)}
+                  onPointerDown={pressGlass}
+                  onPointerUp={releaseGlass}
+                  onPointerCancel={releaseGlass}
+                  onClick={keyboardClick}
                 >
                   {item.label}
                   {item.submenu && <Chevron open={active === item.label} />}
@@ -162,23 +180,17 @@ export default function Navbar() {
                     onMouseEnter={() => show(item.label)}
                     onMouseLeave={hide}
                     className={`
-                      absolute top-full left-0 mt-2
+                      liquid-glass absolute top-full left-0 mt-3
                       w-56 p-2
-                      origin-top
+                      origin-top rounded-2xl will-change-transform
                       ${active === item.label
                         ? "pointer-events-auto"
                         : "pointer-events-none"
                       }
                     `}
                     style={{
-                      opacity: 0,
-                      transform: "translateY(-6px) scale(.96)",
-                      background: "linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.07))",
-                      backdropFilter: "blur(24px) saturate(180%)",
-                      WebkitBackdropFilter: "blur(24px) saturate(180%)",
-                      border: "1px solid rgba(255,255,255,0.28)",
-                      borderRadius: "16px",
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.32), 0 12px 36px rgba(8,15,24,0.24)",
+                      opacity: active === item.label ? 1 : 0,
+                      transform: "translateY(-10px) scale(.97)",
                     }}
                   >
                     {item.submenu.map((sub) => (
@@ -186,20 +198,16 @@ export default function Navbar() {
                         key={sub.label}
                         href={sub.href}
                         className="
-                          block px-4 py-2.5
+                          glass-control block px-4 py-2.5
                           text-sm text-rice-paper/60
-                          border border-transparent rounded-full
-                          hover:text-rice-paper hover:border-white/25 hover:bg-white/10
-                          hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_6px_20px_rgba(8,15,24,0.18)]
-                          focus-visible:outline-none focus-visible:border-white/35 focus-visible:bg-white/10
+                          rounded-2xl hover:text-rice-paper
+                          focus-visible:outline-none
                           transition-[color,background-color,border-color,box-shadow] duration-300
                         "
-                        onPointerEnter={(event) => animateGlass(event.currentTarget, 1.03)}
-                        onPointerLeave={(event) => animateGlass(event.currentTarget, 1)}
-                        onPointerDown={(event) => animateGlass(event.currentTarget, 0.97)}
-                        onPointerUp={(event) => animateGlass(event.currentTarget, 1.03)}
-                        onFocus={(event) => animateGlass(event.currentTarget, 1.03)}
-                        onBlur={(event) => animateGlass(event.currentTarget, 1)}
+                        onPointerDown={pressGlass}
+                        onPointerUp={releaseGlass}
+                        onPointerCancel={releaseGlass}
+                        onClick={keyboardClick}
                       >
                         {sub.label}
                       </a>

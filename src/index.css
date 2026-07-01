@@ -16,6 +16,46 @@
   --font-serif: "Cormorant Garamond", Georgia, serif;
 }
 
+.liquid-glass {
+  isolation: isolate;
+  background: transparent;
+  border: 0;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 12%);
+}
+
+.liquid-glass::before,
+.liquid-glass::after {
+  position: absolute;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  content: "";
+}
+
+.liquid-glass::before {
+  inset: 0;
+  background: transparent;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.liquid-glass::after {
+  inset: -1px;
+  box-shadow:
+    inset 1px 1px 0 rgb(255 255 255 / 28%),
+    inset -1px -1px 0 rgb(255 255 255 / 22%),
+    inset 4px 4px 8px -7px rgb(255 255 255 / 35%),
+    inset -4px -4px 8px -7px rgb(255 255 255 / 30%);
+}
+
+.glass-control:hover,
+.glass-control:focus-visible {
+  background: rgb(255 255 255 / 2%);
+  box-shadow:
+    inset 1px 1px 0 rgb(255 255 255 / 20%),
+    inset -1px -1px 0 rgb(255 255 255 / 14%);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
