@@ -50,7 +50,7 @@ export default function Hero({ current, playing, onSelect, onNext, onTogglePlayi
 
       <div className="absolute inset-0 bg-black/35 transition-colors duration-300 dark:bg-black/55" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-6 pb-8 pt-32 sm:px-10 sm:pb-10 lg:px-14 lg:pb-12">
+      <div className="hero-content relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-end px-6 pb-16 pt-32 sm:px-10 lg:px-14 lg:pb-24">
         <div ref={contentRef} className="mb-auto mt-auto max-w-3xl py-12">
           <div className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-normal text-white/70">
             <span>0{current + 1}</span>

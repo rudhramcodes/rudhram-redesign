@@ -5,6 +5,7 @@
 @theme {
   --color-coral: #d4622a;
   --color-ink: #313131;
+  --color-night: #161616;
   --color-cloud: #f2f2f2;
   --color-muted: #b6b6b6;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -17,6 +18,10 @@ html {
 
 body {
   min-width: 320px;
+}
+
+.navbar-logo {
+  filter: brightness(0) invert(1);
 }
 
 ::selection {
@@ -49,18 +54,36 @@ body {
 }
 
 .facebook-post-frame {
-  transform: translate(-50%, -50%) scale(0.58);
+  transform: translate(-50%, -50%) scale(var(--facebook-scale, 0.7));
 }
 
 @media (max-height: 760px) and (min-width: 768px) {
-  .facebook-post-frame {
-    transform: translate(-50%, -50%) scale(0.48);
+  .community-section {
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
-}
 
-@media (max-width: 767px) {
-  .facebook-post-frame {
-    transform: translate(-50%, -50%) scale(0.64);
+  .community-container {
+    max-width: 760px;
+  }
+
+  .community-grid {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .community-founder-content {
+    padding: 16px;
+  }
+
+  .community-founder-quote {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .careers-card-wrap,
+  .hero-content {
+    padding-bottom: 48px;
   }
 }
 

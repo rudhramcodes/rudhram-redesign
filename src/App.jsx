@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import CommunitySection from "./components/CommunitySection";
+import CareersSection from "./components/CareersSection";
 import { slides } from "./lib/slides";
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         onTogglePlaying={() => setPlaying((value) => !value)}
       />
       <CommunitySection />
+      <CareersSection />
     </div>
   );
 }
