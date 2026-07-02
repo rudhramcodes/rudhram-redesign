@@ -5,18 +5,18 @@ import { slides } from "../lib/slides";
 function PlayIcon({ playing }) {
   return playing ? (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
     </svg>
 
   ) : (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
     </svg>
 
   );
 }
 
-export default function Hero({ current, playing, onSelect, onTogglePlaying }) {
+export default function Hero({ current, playing, onSelect, onNext, onTogglePlaying }) {
   const contentRef = useRef(null);
   const active = slides[current];
 
@@ -81,9 +81,16 @@ export default function Hero({ current, playing, onSelect, onTogglePlaying }) {
             type="button"
             onClick={onTogglePlaying}
             aria-label={playing ? "Pause slideshow" : "Play slideshow"}
-            className="flex w-14 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/20 text-white transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
+            className="relative flex w-14 shrink-0 cursor-pointer items-center justify-center rounded-2xl text-white transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
           >
-            <PlayIcon playing={playing} />
+            <span
+              key={current}
+              className="slide-progress slide-progress--playing"
+              style={{ animationPlayState: playing ? "running" : "paused" }}
+              onAnimationEnd={onNext}
+              aria-hidden="true"
+            />
+            <span className="relative z-10"><PlayIcon playing={playing} /></span>
           </button>
         </div>
       </div>

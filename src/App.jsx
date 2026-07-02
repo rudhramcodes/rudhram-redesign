@@ -14,12 +14,6 @@ export default function App() {
     localStorage.setItem("rudhram-theme", dark ? "dark" : "light");
   }, [dark]);
 
-  useEffect(() => {
-    if (!playing) return;
-    const timer = window.setTimeout(() => setCurrent((value) => (value + 1) % slides.length), 6000);
-    return () => window.clearTimeout(timer);
-  }, [current, playing]);
-
   return (
     <div className="min-h-screen bg-white font-sans text-ink dark:bg-black dark:text-cloud">
       <Navbar
@@ -30,6 +24,7 @@ export default function App() {
         current={current}
         playing={playing}
         onSelect={setCurrent}
+        onNext={() => setCurrent((value) => (value + 1) % slides.length)}
         onTogglePlaying={() => setPlaying((value) => !value)}
       />
     </div>
