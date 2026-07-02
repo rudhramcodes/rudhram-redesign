@@ -48,6 +48,22 @@ body {
   animation: slide-progress 6s linear forwards;
 }
 
+.facebook-post-frame {
+  transform: translate(-50%, -50%) scale(0.58);
+}
+
+@media (max-height: 760px) and (min-width: 768px) {
+  .facebook-post-frame {
+    transform: translate(-50%, -50%) scale(0.48);
+  }
+}
+
+@media (max-width: 767px) {
+  .facebook-post-frame {
+    transform: translate(-50%, -50%) scale(0.64);
+  }
+}
+
 @keyframes slide-progress {
   to {
     --slide-progress: 100%;

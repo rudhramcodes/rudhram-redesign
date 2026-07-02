@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import CommunitySection from "./components/CommunitySection";
 import { slides } from "./lib/slides";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
         onNext={() => setCurrent((value) => (value + 1) % slides.length)}
         onTogglePlaying={() => setPlaying((value) => !value)}
       />
+      <CommunitySection />
     </div>
   );
 }
