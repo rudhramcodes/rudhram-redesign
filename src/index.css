@@ -1,69 +1,31 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-rice-paper: #f3ede3;
-  --color-sandalwood: #d9b78c;
-  --color-agni-red: #8e392f;
-  --color-neel-green: #315955;
-  --color-background: #f3ede3;
-  --color-surface: #d9b78c;
-  --color-brand: #8e392f;
-  --color-action: #8e392f;
-  --color-foreground: #315955;
-  --color-border: #315955;
-  --color-focus: #8e392f;
-  --font-sans: "Manrope", system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --color-coral: #d4622a;
+  --color-ink: #313131;
+  --color-cloud: #f2f2f2;
+  --color-muted: #b6b6b6;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-.liquid-glass {
-  isolation: isolate;
-  background: transparent;
-  border: 0;
-  box-shadow: 0 14px 28px rgb(0 0 0 / 12%);
+html {
+  scroll-behavior: smooth;
 }
 
-.liquid-glass::before,
-.liquid-glass::after {
-  position: absolute;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  content: "";
+body {
+  min-width: 320px;
 }
 
-.liquid-glass::before {
-  inset: 0;
-  background: transparent;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+::selection {
+  background: #d4622a;
+  color: #ffffff;
 }
 
-.liquid-glass::after {
-  inset: -1px;
-  box-shadow:
-    inset 1px 1px 0 rgb(255 255 255 / 28%),
-    inset -1px -1px 0 rgb(255 255 255 / 22%),
-    inset 4px 4px 8px -7px rgb(255 255 255 / 35%),
-    inset -4px -4px 8px -7px rgb(255 255 255 / 30%);
-}
-
-.glass-control:hover,
-.glass-control:focus-visible {
-  background: rgb(255 255 255 / 2%);
-  box-shadow:
-    inset 1px 1px 0 rgb(255 255 255 / 20%),
-    inset -1px -1px 0 rgb(255 255 255 / 14%);
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
