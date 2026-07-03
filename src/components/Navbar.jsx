@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  Bars2Icon,
+  ChevronDownIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
 
 const navItems = [
+  ["Business", "#business"],
+  ["Ventures", "#ventures"],
   ["Our Story", "#story"],
   ["Visionaries", "#visionaries"],
   ["Our Roots", "#roots"],
@@ -13,202 +19,269 @@ const aboutItems = [
   ["We are Rudhram", "#we-are-rudhram"],
 ];
 
-function ThemeIcon({ dark }) {
-  return dark ? (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M19.07 4.93l-1.42 1.42M6.35 17.65l-1.42 1.42" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  ) : (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-      <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    </svg>
-  );
-}
+const socialItems = [
+  ["Instagram", "https://www.instagram.com/rudhramenterprises"],
+  ["LinkedIn", "https://www.linkedin.com/in/rudhram-enterprises-844216419/"],
+  ["Facebook", "https://www.facebook.com/rudhramenterprises"],
+];
 
-export default function Navbar({ dark, onToggleTheme }) {
-  const navRef = useRef(null);
-  const linksRef = useRef(null);
-  const [compact, setCompact] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const collapsed = compact && !expanded;
-
-  useEffect(() => {
-    const animation = waapi.animate(navRef.current.querySelectorAll("[data-nav-item]"), {
-      opacity: [0, 1],
-      transform: ["translateY(-10px)", "translateY(0)"],
-      delay: stagger(45),
-      duration: 480,
-      ease: "out(4)",
-    });
-    return () => animation.cancel();
-  }, []);
+export default function Navbar() {
+  const desktopRef = useRef(null);
+  const desktopLinksRef = useRef(null);
+  const mobileRef = useRef(null);
+  const mobileContentRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const desktopCollapsed = scrolled && !desktopMenuOpen;
 
   useEffect(() => {
     const update = () => {
-      const next = window.innerWidth >= 768 && window.scrollY > 120;
-      setCompact(next);
-      if (!next) setExpanded(false);
+      const next = window.scrollY > 100;
+      setScrolled(next);
+      if (!next) setDesktopMenuOpen(false);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   useEffect(() => {
-    const nav = navRef.current;
-    const links = linksRef.current;
-    const sideGutter = window.innerWidth >= 1024 ? 112 : window.innerWidth >= 640 ? 80 : 48;
-    const targetWidth = collapsed ? 232 : Math.min(1040, window.innerWidth - sideGutter);
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const navDuration = reducedMotion ? 0 : collapsed ? 520 : 620;
-    const linkDuration = reducedMotion ? 0 : collapsed ? 180 : 280;
-    let navAnimation;
-    let linksAnimation;
-    let navTimer;
-    let linksTimer;
-    let resetWidth;
+    const nav = desktopRef.current;
+    const links = desktopLinksRef.current;
+    if (window.innerWidth < 768) return undefined;
 
-    const animateNav = () => {
-      navAnimation = waapi.animate(nav, {
-        width: [`${nav.getBoundingClientRect().width}px`, `${targetWidth}px`],
-        duration: navDuration,
-        ease: "inOut(4)",
-      });
-      nav.style.width = `${targetWidth}px`;
-      if (!collapsed) {
-        resetWidth = window.setTimeout(() => {
-          nav.style.width = "";
-        }, navDuration);
-      }
-    };
+    const targetWidth = desktopCollapsed
+      ? 220
+      : Math.min(900, window.innerWidth - 48);
+    const widthAnimation = waapi.animate(nav, {
+      width: [`${nav.getBoundingClientRect().width}px`, `${targetWidth}px`],
+      delay: desktopCollapsed ? 220 : 0,
+      duration: desktopCollapsed ? 560 : 680,
+      ease: "inOut(4)",
+    });
+    nav.style.width = `${targetWidth}px`;
 
-    if (collapsed) {
-      links.inert = true;
-      links.style.pointerEvents = "none";
-      links.style.overflow = "hidden";
-      linksAnimation = waapi.animate(links, {
-        opacity: [Number.parseFloat(getComputedStyle(links).opacity), 0],
-        transform: [links.style.transform || "translateY(0)", "translateY(8px)"],
-        duration: linkDuration,
-        ease: "inOut(3)",
-      });
-      links.style.opacity = "0";
-      links.style.transform = "translateY(8px)";
-      navTimer = window.setTimeout(animateNav, linkDuration);
-    } else {
-      links.inert = true;
-      links.style.pointerEvents = "none";
-      links.style.overflow = "hidden";
-      links.style.opacity = "0";
-      links.style.transform = "translateY(8px)";
-      animateNav();
-      linksTimer = window.setTimeout(() => {
-        links.inert = false;
-        links.style.pointerEvents = "auto";
-        links.style.overflow = "visible";
-        linksAnimation = waapi.animate(links, {
-          opacity: [0, 1],
-          transform: ["translateY(8px)", "translateY(0)"],
-          duration: linkDuration,
-          ease: "out(4)",
-        });
-        links.style.opacity = "1";
-        links.style.transform = "translateY(0)";
-      }, navDuration);
-    }
+    const linksAnimation = waapi.animate(links, {
+      opacity: desktopCollapsed ? [1, 0] : [0, 1],
+      transform: desktopCollapsed
+        ? ["translateY(0)", "translateY(10px)"]
+        : ["translateY(16px)", "translateY(0)"],
+      delay: desktopCollapsed ? 0 : 700,
+      duration: desktopCollapsed ? 200 : 420,
+      ease: desktopCollapsed ? "inOut(3)" : "out(4)",
+    });
+    links.style.opacity = desktopCollapsed ? "0" : "1";
+    links.style.transform = desktopCollapsed ? "translateY(10px)" : "translateY(0)";
 
     return () => {
-      window.clearTimeout(navTimer);
-      window.clearTimeout(linksTimer);
-      window.clearTimeout(resetWidth);
-      navAnimation?.cancel();
-      linksAnimation?.cancel();
+      widthAnimation.cancel();
+      linksAnimation.cancel();
     };
-  }, [collapsed]);
+  }, [desktopCollapsed]);
 
-  const toggleTheme = (event) => {
+  useEffect(() => {
+    const panel = mobileRef.current;
+    const content = mobileContentRef.current;
+    if (window.innerWidth >= 768) return undefined;
+
+    const targetHeight = menuOpen ? window.innerHeight - 24 : 68;
+    const panelAnimation = waapi.animate(panel, {
+      height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
+      borderRadius: menuOpen ? ["20px", "24px"] : ["24px", "20px"],
+      delay: menuOpen ? 0 : 200,
+      duration: menuOpen ? 720 : 560,
+      ease: "inOut(4)",
+    });
+    panel.style.height = `${targetHeight}px`;
+    panel.style.borderRadius = menuOpen ? "24px" : "20px";
+
+    const contentAnimation = waapi.animate(content, {
+      opacity: menuOpen ? [0, 1] : [1, 0],
+      transform: menuOpen
+        ? ["translateY(18px)", "translateY(0)"]
+        : ["translateY(0)", "translateY(12px)"],
+      delay: menuOpen ? 740 : 0,
+      duration: menuOpen ? 440 : 180,
+      ease: menuOpen ? "out(4)" : "inOut(3)",
+    });
+    content.style.opacity = menuOpen ? "1" : "0";
+    content.style.transform = menuOpen ? "translateY(0)" : "translateY(12px)";
+
+    if (!menuOpen) {
+      return () => {
+        panelAnimation.cancel();
+        contentAnimation.cancel();
+      };
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event) => event.key === "Escape" && setMenuOpen(false);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    const itemsAnimation = waapi.animate(
+      mobileRef.current.querySelectorAll("[data-mobile-item]"),
+      {
+        opacity: [0, 1],
+        transform: ["translateY(16px)", "translateY(0)"],
+        delay: stagger(42, { start: 760 }),
+        duration: 420,
+        ease: "out(4)",
+      },
+    );
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+      panelAnimation.cancel();
+      contentAnimation.cancel();
+      itemsAnimation.cancel();
+    };
+  }, [menuOpen]);
+
+  const animateTap = (event) => {
     waapi.animate(event.currentTarget, {
-      transform: ["scale(1)", "scale(.9)", "scale(1)"],
+      transform: ["scale(1)", "scale(.92)", "scale(1)"],
       duration: 260,
       ease: "out(4)",
     });
-    onToggleTheme();
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setAboutOpen(false);
   };
 
   return (
-    <nav
-      ref={navRef}
-      aria-label="Primary navigation"
-      onPointerEnter={() => compact && setExpanded(true)}
-      onPointerLeave={() => setExpanded(false)}
-      onFocus={() => compact && setExpanded(true)}
-      onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && setExpanded(false)}
-      className={`fixed left-1/2 top-4 z-50 flex h-[72px] w-[calc(100%_-_3rem)] max-w-[1040px] -translate-x-1/2 items-center gap-3 rounded-[28px] border px-3 backdrop-blur-xl will-change-[width] sm:w-[calc(100%_-_5rem)] sm:px-4 lg:w-[calc(100%_-_7rem)] ${dark ? "border-muted/30 bg-night/90 text-cloud" : "border-white/25 bg-black/35 text-white"}`}
-    >
-      <a href="#business" data-nav-item className="flex h-14 w-24 shrink-0 items-center justify-center rounded-2xl px-2 transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white sm:w-32">
-        <img src="/logo.png" alt="Rudhram" className="navbar-logo h-11 w-full object-contain" />
-      </a>
-
-      <div ref={linksRef} data-nav-links className="hidden min-w-0 flex-1 items-center justify-center gap-1 md:flex">
-        <a
-          href="#business"
-          data-nav-item
-          className="rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
-        >
-          Business
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+      <nav
+        ref={desktopRef}
+        aria-label="Primary navigation"
+        style={{ width: "min(900px, calc(100vw - 48px))" }}
+        className={`mx-auto hidden h-[68px] items-center rounded-[20px] border border-black/10 bg-cloud/95 px-3 text-night shadow-[0_12px_36px_rgba(0,0,0,.12)] backdrop-blur-xl md:flex ${desktopCollapsed ? "overflow-hidden" : "overflow-visible"}`}
+      >
+        <a href="#business" onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-nav-item className="flex h-12 w-32 shrink-0 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-coral">
+          <img src="/logo.png" alt="Rudhram" className="h-9 w-[116px] object-contain object-left" />
         </a>
 
-        <div className="group relative" data-nav-item>
-          <a
-            href="#about"
-            aria-haspopup="true"
-            className="flex items-center gap-1 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
+        <div ref={desktopLinksRef} inert={desktopCollapsed} aria-hidden={desktopCollapsed} style={{ opacity: 0, transform: "translateY(16px)" }} className={`ml-auto flex min-w-0 items-center justify-end gap-1 ${desktopCollapsed ? "w-0 overflow-hidden" : "w-full overflow-visible"}`}>
+          {navItems.slice(0, 2).map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-nav-item className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral">
+              {label}
+            </a>
+          ))}
+
+          <div className="group relative" data-nav-item>
+            <a href="#about" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral">
+              About Us
+              <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
+            </a>
+            <div className="pointer-events-none absolute left-0 top-full w-52 translate-y-2 pt-2 opacity-0 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className="rounded-[16px] border border-black/10 bg-cloud/95 p-2 shadow-[0_16px_40px_rgba(0,0,0,.14)] backdrop-blur-xl">
+                {aboutItems.map(([label, href]) => (
+                  <a key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="block rounded-xl px-4 py-3 text-sm font-semibold hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral">
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {navItems.slice(2).map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-nav-item className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral">
+              {label}
+            </a>
+          ))}
+        </div>
+
+        {scrolled && (
+          <button
+            type="button"
+            onClick={() => setDesktopMenuOpen((value) => !value)}
+            aria-label={desktopMenuOpen ? "Collapse navigation menu" : "Expand navigation menu"}
+            aria-expanded={desktopMenuOpen}
+            onPointerDown={animateTap}
+            className="ml-2 flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral"
           >
-            About Us
-            <ChevronDownIcon className="size-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
+            {desktopMenuOpen ? <XMarkIcon className="size-6" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
+          </button>
+        )}
+      </nav>
+
+      <nav
+        ref={mobileRef}
+        aria-label="Mobile navigation"
+        style={{ height: "68px", borderRadius: "20px" }}
+        className="mx-auto flex flex-col overflow-hidden border border-black/10 bg-cloud/95 text-night shadow-[0_12px_36px_rgba(0,0,0,.12)] backdrop-blur-xl md:hidden"
+      >
+        <div className="flex h-[66px] shrink-0 items-center px-3">
+          <a href="#business" onClick={closeMenu} onPointerDown={animateTap} className="flex h-12 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-coral">
+            <img src="/logo.png" alt="Rudhram" className="h-9 w-[116px] object-contain object-left" />
           </a>
-          <div className="pointer-events-none absolute left-0 top-full w-48 translate-y-1 pt-2 opacity-0 transition-[opacity,transform] group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
-            <div className={`rounded-2xl border p-2 backdrop-blur-xl ${dark ? "border-muted/30 bg-night/95 text-cloud" : "border-white/25 bg-black/50 text-white"}`}>
-              {aboutItems.map(([label, href]) => (
-                <a
-                  key={href}
-                  href={href}
-                  className="block rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
-                >
+          <button
+            type="button"
+            onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            onPointerDown={animateTap}
+            className="ml-auto flex size-11 cursor-pointer items-center justify-center rounded-xl hover:bg-black/5 focus-visible:outline-3 focus-visible:outline-coral"
+          >
+            {menuOpen ? <XMarkIcon className="size-8" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
+          </button>
+        </div>
+
+        <div
+          inert={!menuOpen}
+          aria-hidden={!menuOpen}
+          ref={mobileContentRef}
+          style={{ opacity: 0, transform: "translateY(12px)" }}
+          className={`flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-5 ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        >
+          <div className="mobile-menu-links mt-7 flex flex-col items-start">
+            {navItems.slice(0, 2).map(([label, href]) => (
+              <a key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-2 text-[34px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+                {label}
+              </a>
+            ))}
+
+            <button type="button" onClick={() => setAboutOpen((value) => !value)} onPointerDown={animateTap} data-mobile-item aria-expanded={aboutOpen} className="flex cursor-pointer items-center gap-3 rounded-lg py-2 text-[34px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              About Us
+              <ChevronDownIcon className={`size-5 ${aboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+            </button>
+            {aboutOpen && (
+              <div className="mb-2 flex flex-col border-l border-coral pl-4">
+                {aboutItems.map(([label, href]) => (
+                  <a key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} className="rounded-lg py-1.5 text-lg font-medium text-black/60 focus-visible:outline-3 focus-visible:outline-coral">
+                    {label}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {navItems.slice(2).map(([label, href]) => (
+              <a key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-2 text-[34px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+                {label}
+              </a>
+            ))}
+          </div>
+
+          <div className="mobile-menu-footer mt-auto pt-8" data-mobile-item>
+            <p className="text-sm leading-6 text-black/50">Mumbai · Surat · Delhi</p>
+            <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+              {socialItems.map(([label, href]) => (
+                <a key={href} href={href} target="_blank" rel="noreferrer" onPointerDown={animateTap} className="text-sm font-medium underline decoration-black/20 underline-offset-4 focus-visible:outline-3 focus-visible:outline-coral">
                   {label}
                 </a>
               ))}
             </div>
+            <div className="mobile-menu-images mt-7 flex gap-3" aria-hidden="true">
+              <img src="/shivang.webp" alt="" className="h-20 w-28 rounded-lg object-cover object-top" />
+              <img src="/mukund.webp" alt="" className="h-20 w-28 rounded-lg object-cover object-top" />
+            </div>
           </div>
         </div>
-
-        {navItems.map(([label, href]) => (
-          <a
-            key={href}
-            href={href}
-            data-nav-item
-            className="rounded-2xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white"
-          >
-            {label}
-          </a>
-        ))}
-      </div>
-
-      <button
-        type="button"
-        onClick={toggleTheme}
-        data-nav-item
-        aria-label={`Switch to ${dark ? "light" : "dark"} mode`}
-        aria-pressed={dark}
-        className={`ml-auto flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-white md:ml-0 ${dark ? "border-muted/30" : "border-white/20"}`}
-      >
-        <ThemeIcon dark={dark} />
-      </button>
-    </nav>
+      </nav>
+    </header>
   );
 }

@@ -1,27 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import VenturesSection from "./components/VenturesSection";
 import CommunitySection from "./components/CommunitySection";
 import CareersSection from "./components/CareersSection";
 import { slides } from "./lib/slides";
 
 export default function App() {
-  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    document.documentElement.style.colorScheme = dark ? "dark" : "light";
-    localStorage.setItem("rudhram-theme", dark ? "dark" : "light");
-  }, [dark]);
-
   return (
-    <div className="min-h-screen bg-white font-sans text-ink dark:bg-black dark:text-cloud">
-      <Navbar
-        dark={dark}
-        onToggleTheme={() => setDark((value) => !value)}
-      />
+    <div className="min-h-screen bg-white font-sans text-ink">
+      <Navbar />
       <Hero
         current={current}
         playing={playing}
@@ -31,6 +22,7 @@ export default function App() {
       />
       <CommunitySection />
       <CareersSection />
+      <VenturesSection />
     </div>
   );
 }

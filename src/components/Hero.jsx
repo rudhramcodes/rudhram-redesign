@@ -38,7 +38,7 @@ export default function Hero({ current, playing, onSelect, onNext, onTogglePlayi
   }, [current]);
 
   return (
-    <main className="relative h-dvh min-h-[640px] overflow-hidden bg-black text-white">
+    <main id="business" className="relative h-dvh min-h-[640px] overflow-hidden bg-black text-white">
       {slides.map((slide, index) => (
         <div
           key={slide.id}

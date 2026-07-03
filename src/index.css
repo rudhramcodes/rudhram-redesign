@@ -5,7 +5,7 @@
 @theme {
   --color-coral: #d4622a;
   --color-ink: #313131;
-  --color-night: #161616;
+  --color-night: #0b0b0b;
   --color-cloud: #f2f2f2;
   --color-muted: #b6b6b6;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -18,10 +18,6 @@ html {
 
 body {
   min-width: 320px;
-}
-
-.navbar-logo {
-  filter: brightness(0) invert(1);
 }
 
 ::selection {
@@ -57,6 +53,39 @@ body {
   transform: translate(-50%, -50%) scale(var(--facebook-scale, 0.7));
 }
 
+.venture-rail {
+  scrollbar-width: none;
+}
+
+.venture-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.venture-progress {
+  animation: venture-progress linear forwards;
+}
+
+@media (max-height: 720px) and (max-width: 767px) {
+  .mobile-menu-links {
+    margin-top: 20px;
+  }
+
+  .mobile-menu-links > a,
+  .mobile-menu-links > button {
+    font-size: 28px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .mobile-menu-footer {
+    padding-top: 20px;
+  }
+
+  .mobile-menu-images {
+    display: none;
+  }
+}
+
 @media (max-height: 760px) and (min-width: 768px) {
   .community-section {
     padding-top: 48px;
@@ -82,7 +111,8 @@ body {
   }
 
   .careers-card-wrap,
-  .hero-content {
+  .hero-content,
+  .ventures-content {
     padding-bottom: 48px;
   }
 }
@@ -90,6 +120,16 @@ body {
 @keyframes slide-progress {
   to {
     --slide-progress: 100%;
+  }
+}
+
+@keyframes venture-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
   }
 }
 
