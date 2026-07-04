@@ -67,7 +67,7 @@ function BusinessHero() {
         <h1 className="md:col-span-9 text-[clamp(3.5rem,8.5vw,9rem)] font-semibold leading-[0.86] tracking-[-0.065em]">
           {words.map((word, index) => (
             <Fragment key={`${word}-${index}`}>
-              <span className="inline-block overflow-hidden pb-[0.08em]">
+              <span className="inline-block overflow-hidden pb-[0.12em] pr-[0.06em]">
                 <motion.span
                   className="inline-block"
                   initial={reducedMotion ? false : { y: "110%" }}
@@ -120,29 +120,38 @@ function WhatWeAre() {
     <section id="what-we-are" data-business-section data-section="3" className={`${sectionPadding} bg-cloud`}>
       <div className={container}>
         <SectionHeading className="max-w-[12ch]">What we are.<br />What we are not.</SectionHeading>
-        <div className="mt-16 grid border-y border-ink/15 md:grid-cols-2">
-          <Reveal className="py-8 md:border-r md:border-ink/15 md:py-12 md:pr-12">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-coral">What we are</h3>
-            <ul className="mt-8">
-              {whatWeAre.map((item) => (
-                <li key={item} className="flex gap-4 border-t border-ink/15 py-5 text-lg leading-7 first:border-t-0">
-                  <CheckIcon className="mt-1 size-4 shrink-0 text-coral" strokeWidth={2} aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-          <Reveal className="border-t border-ink/15 py-8 md:border-t-0 md:py-12 md:pl-12" delay={0.12}>
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-ink/45">What we are not</h3>
-            <ul className="mt-8">
-              {whatWeAreNot.map((item) => (
-                <li key={item} className="border-t border-ink/15 py-5 text-lg leading-7 text-ink/45 line-through decoration-ink/30 first:border-t-0">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
+        <Reveal className="mt-16 overflow-hidden rounded-2xl border border-ink/15">
+          <table className="w-full border-separate border-spacing-0">
+            <thead>
+              <tr>
+                <th scope="col" className="w-1/2 bg-white/50 px-5 py-4 sm:px-6 sm:py-5 text-left font-mono text-xs font-semibold uppercase tracking-[0.12em] text-coral border-b border-ink/15">
+                  What we are
+                </th>
+                <th scope="col" className="w-1/2 bg-white/50 px-5 py-4 sm:px-6 sm:py-5 text-left font-mono text-xs font-semibold uppercase tracking-[0.12em] text-ink/45 border-b border-ink/15">
+                  What we are not
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {whatWeAre.map((item, i) => {
+                const notLast = i < whatWeAre.length - 1;
+                return (
+                  <tr key={item}>
+                    <td className={`px-5 py-4 sm:px-6 sm:py-5 align-top ${notLast ? "border-b border-ink/15" : ""}`}>
+                      <div className="flex gap-3">
+                        <CheckIcon className="mt-1 size-4 shrink-0 text-coral" strokeWidth={2} aria-hidden="true" />
+                        <span className="text-sm leading-6 sm:text-base">{item}</span>
+                      </div>
+                    </td>
+                    <td className={`px-5 py-4 sm:px-6 sm:py-5 align-top text-sm leading-6 sm:text-base text-ink/45 line-through decoration-ink/30 ${notLast ? "border-b border-ink/15" : ""}`}>
+                      {whatWeAreNot[i]}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </Reveal>
       </div>
     </section>
   );

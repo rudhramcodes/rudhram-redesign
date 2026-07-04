@@ -6,7 +6,7 @@ function LayerCard({ layer, className = "", style }) {
   return (
     <motion.article
       style={style}
-      className={`h-[230px] border border-ink/15 bg-white p-6 shadow-[0_18px_50px_rgb(49_49_49/0.08)] will-change-transform sm:p-8 ${className}`}
+      className={`h-[230px] rounded-2xl border border-ink/15 bg-white p-6 shadow-[0_18px_50px_rgb(49_49_49/0.08)] will-change-transform sm:p-8 ${className}`}
     >
       <div className="flex items-start justify-between gap-8">
         <h3 className="text-3xl font-semibold tracking-tight sm:text-4xl">{layer.title}</h3>
