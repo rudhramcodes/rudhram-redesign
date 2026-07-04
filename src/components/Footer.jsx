@@ -4,18 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { waapi, stagger } from "animejs";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import SocialIcon from "./SocialIcon";
 
 const pageLinks = [
-  ["Business", "/#business"],
+  ["Business", "/business"],
   ["Our Story", "/#story"],
   ["Ventures", "/#ventures"],
   ["Visionaries", "/#visionaries"],
 ];
 
 const aboutLinks = [
-  ["About Rudhram", "/#about"],
-  ["We are Rudhram", "/#we-are-rudhram"],
+  ["About Rudhram", "/business#what-is-rudhram"],
+  ["We are Rudhram", "/business#what-we-are"],
 ];
 
 const offices = [
@@ -52,6 +53,17 @@ const legalLinks = [
 const connectedTravel = 144;
 
 function FooterLink({ href, children }) {
+  if (href.startsWith("/")) {
+    return (
+      <Link
+        to={href}
+        className="inline-flex w-fit items-center py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral dark:text-cloud/60 dark:hover:text-coral"
+      >
+        {children}
+      </Link>
+    );
+  }
+
   return (
     <a
       href={href}
@@ -423,13 +435,13 @@ export default function Footer({ connected = false }) {
             </p>
             <div className="flex gap-6">
               {legalLinks.map(([label, href]) => (
-                <a
+                <Link
                   key={href}
-                  href={href}
+                  to={href}
                   className="text-ink/60 underline decoration-current/30 underline-offset-4 transition-colors duration-200 ease-out hover:text-coral dark:text-cloud/50 dark:hover:text-coral"
                 >
                   {label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

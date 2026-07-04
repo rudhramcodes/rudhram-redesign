@@ -1,4 +1,5 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import Footer from "./Footer";
 
 const legalPages = {
@@ -75,13 +76,13 @@ export default function LegalPage({ type }) {
     <div className="min-h-screen bg-white font-sans text-night">
       <header className="border-b border-muted/30 bg-cloud px-5 py-5 sm:px-10 lg:px-14">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-6">
-          <a href="/" aria-label="Rudhram home" className="focus-visible:outline-3 focus-visible:outline-coral">
+          <Link to="/" aria-label="Rudhram home" className="focus-visible:outline-3 focus-visible:outline-coral">
             <img src="/logo.png" alt="Rudhram" className="h-10 w-32 object-contain object-left" />
-          </a>
-          <a href="/" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
+          </Link>
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
             <ArrowLeftIcon className="size-4" aria-hidden="true" />
             Back to home
-          </a>
+          </Link>
         </div>
       </header>
 
