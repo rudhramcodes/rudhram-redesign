@@ -1,6 +1,6 @@
 export default function CareersSection() {
   return (
-    <section id="roots" className="relative h-dvh min-h-[640px] overflow-hidden bg-[#f4f4f4] text-ink dark:bg-black dark:text-cloud">
+    <section id="roots" className="relative isolate h-dvh min-h-[640px] overflow-hidden bg-[#f4f4f4] text-ink dark:bg-black dark:text-cloud">
       <img
         src="/map.png"
         alt="Map of India showing Rudhram locations in Surat, Mumbai, and Delhi"

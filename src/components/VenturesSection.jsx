@@ -7,48 +7,52 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 const ventures = [
   {
     name: "Panigrahna",
     description:
       "A considered venture shaped around meaningful unions, enduring rituals, and thoughtfully created experiences.",
+    buttonText: "Visit Panigrahna",
+    url: "https://panigrahna.com",
   },
   {
     name: "Aghhori",
     description:
       "An uncompromising exploration of transformation, inner strength, and ideas that challenge convention.",
+    buttonText: "Coming Soon",
   },
   {
     name: "House Of Joogi",
     description:
       "A creative house for culture-led expression, original thinking, and stories with a distinct point of view.",
+    buttonText: "Coming Soon",
   },
   {
     name: "Damrru",
     description:
       "Rhythm, movement, and sonic identity brought together through a bold contemporary lens.",
+    buttonText: "Coming Soon",
   },
   {
     name: "Tandavs",
     description:
       "A platform inspired by energy in motion, disciplined expression, and the force of performance.",
+    buttonText: "Coming Soon",
   },
   {
     name: "Kapaalik",
     description:
       "A distinctive venture grounded in fearless identity, transformation, and purposeful creation.",
+    buttonText: "Coming Soon",
   },
   {
     name: "Kalyannam",
     description:
       "A thoughtful interpretation of celebration, connection, and experiences designed to endure.",
-  },
-  {
-    name: "Storage Media Solution",
-    description:
-      "A structured approach to protecting, organising, and preserving valuable media.",
-  },
+    buttonText: "Coming Soon",
+  }
 ];
 
 const slideDuration = 7000;
@@ -58,7 +62,15 @@ const backgroundImage =
 export default function VenturesSection() {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const rootRef = useRef(null);
   const contentRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: rootRef,
+    offset: ["start end", "end start"],
+  });
+  const backdropY = useTransform(scrollYProgress, [0, 1], [-56, 56]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [-24, 24]);
   const venture = ventures[current];
 
   const selectVenture = (index) => {
@@ -85,18 +97,27 @@ export default function VenturesSection() {
 
   return (
     <section
+      ref={rootRef}
       id="ventures"
       aria-labelledby="ventures-heading"
-      className="relative h-[100svh] min-h-[640px] overflow-hidden bg-night text-white"
+      className="relative isolate h-[100svh] min-h-[640px] bg-night text-white"
     >
-      <img
-        src={backgroundImage}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover object-center"
-      />
-      <div className="absolute inset-0 bg-night/60" aria-hidden="true" />
+      <motion.div
+        className="pointer-events-none absolute -top-16 -bottom-48 inset-x-0 will-change-transform"
+        style={{ y: reducedMotion ? 0 : backdropY }}
+      >
+        <img
+          src={backgroundImage}
+          alt=""
+          className="h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-night/50" aria-hidden="true" />
+      </motion.div>
 
-      <div className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-16 pt-32 sm:px-10 md:pb-24 md:pt-36 lg:px-14">
+      <motion.div
+        className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-16 pt-32 will-change-transform sm:px-10 md:pb-24 md:pt-36 lg:px-14"
+        style={{ y: reducedMotion ? 0 : contentY }}
+      >
         <div className="flex flex-1 items-end justify-between gap-8 pb-10 md:pb-14">
           <div ref={contentRef} aria-live="polite" className="max-w-2xl">
             <p
@@ -112,15 +133,27 @@ export default function VenturesSection() {
             <p data-venture-copy className="mt-6 max-w-[50ch] text-base leading-7 text-white/75 sm:text-lg">
               {venture.description}
             </p>
-            <button
-              data-venture-copy
-              type="button"
-              disabled
-              className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white px-5 py-3 text-sm font-semibold text-night"
-            >
-              Visit {venture.name}
-              <ArrowRightIcon className="size-4" aria-hidden="true" />
-            </button>
+            {venture.url ? (
+              <a
+                data-venture-copy
+                href={venture.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white px-5 py-3 text-sm font-semibold text-night transition-colors"
+              >
+                {venture.buttonText}
+                <ArrowRightIcon className="size-4" aria-hidden="true" />
+              </a>
+            ) : (
+              <button
+                data-venture-copy
+                type="button"
+                disabled
+                className="mt-8 inline-flex cursor-not-allowed items-center gap-3 rounded-full border border-white/15 bg-[#cfcfcf] px-5 py-3 text-sm font-semibold text-night/50"
+              >
+                {venture.buttonText}
+              </button>
+            )}
           </div>
 
           <div className="hidden shrink-0 items-center gap-2 md:flex">
@@ -199,7 +232,7 @@ export default function VenturesSection() {
             );
           })}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
