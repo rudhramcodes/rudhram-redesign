@@ -45,7 +45,7 @@ export default function OurStorySection() {
         </header>
 
         <div className="mt-12 grid md:mt-16 md:grid-cols-12">
-          <figure className="py-7 md:col-span-5 md:border-r md:border-muted/30 md:py-10 md:pr-10">
+          <figure className="py-7 md:col-span-5  md:py-10 md:pr-10">
             <div className="grid grid-cols-2 gap-3">
               <img
                 src="/viral.webp"

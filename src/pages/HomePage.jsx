@@ -5,6 +5,7 @@ import VenturesSection from "../components/VenturesSection";
 import CommunitySection from "../components/CommunitySection";
 import OurStorySection from "../components/OurStorySection";
 import CareersSection from "../components/CareersSection";
+import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 import { slides } from "../lib/slides";
 
@@ -25,6 +26,7 @@ export default function HomePage() {
       <CommunitySection />
       <OurStorySection />
       <CareersSection />
+      <ContactSection />
       <div className="relative isolate overflow-hidden">
         <VenturesSection />
         <Footer connected />
