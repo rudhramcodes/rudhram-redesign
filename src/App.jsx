@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import BusinessPage from "./pages/BusinessPage";
+import AboutRudhramPage from "./pages/AboutRudhramPage";
+import WeAreRudhramPage from "./pages/WeAreRudhramPage";
+import VenturesPage from "./pages/VenturesPage";
+import VisionariesPage from "./pages/VisionariesPage";
 import LegalPage from "./components/LegalPage";
 
 function ScrollToLocation() {
@@ -28,6 +32,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/business" element={<BusinessPage />} />
+        <Route path="/about-rudhram" element={<AboutRudhramPage />} />
+        <Route path="/we-are-rudhram" element={<WeAreRudhramPage />} />
+        <Route path="/ventures" element={<VenturesPage />} />
+        <Route path="/visionaries" element={<VisionariesPage />} />
         <Route path="/privacy-policy" element={<LegalPage type="privacy" />} />
         <Route path="/terms-and-conditions" element={<LegalPage type="terms" />} />
         <Route path="*" element={<Navigate to="/" replace />} />

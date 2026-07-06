@@ -1,3 +1,6 @@
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
+
 const storyMoments = [
   {
     marker: "01",
@@ -86,6 +89,15 @@ export default function OurStorySection() {
                 Uncertainty did not become their weakness. It became the reason to build with direction.
               </p>
             </blockquote>
+            <Link
+              to="/we-are-rudhram"
+              className="group mt-7 inline-flex items-center gap-3 text-sm font-semibold focus-visible:outline-3 focus-visible:outline-coral"
+            >
+              Read our full story
+              <span className="flex size-9 items-center justify-center rounded-full border border-ink/25 transition-colors group-hover:border-coral group-hover:bg-coral group-hover:text-white">
+                <ArrowRightIcon className="size-4" aria-hidden="true" />
+              </span>
+            </Link>
           </div>
         </div>
       </div>

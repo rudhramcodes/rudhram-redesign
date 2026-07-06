@@ -20,12 +20,12 @@ export default function SectionCounter() {
 
   return (
     <div
-      aria-label={`Business page section ${active} of 11`}
-      className="fixed left-2 top-1/2 z-40 -translate-y-1/2 font-mono text-[10px] font-semibold tracking-[0.08em] text-ink sm:left-4 md:left-6"
+      aria-label={`Business page section ${active} of 6`}
+      className="fixed bottom-6 left-6 z-40 hidden rounded-full border border-ink/15 bg-white/90 px-3 py-2 font-mono text-[10px] font-semibold tracking-[0.08em] text-ink backdrop-blur lg:block"
     >
       <span className="text-coral">{String(active).padStart(2, "0")}</span>
       <span className="mx-1 text-muted">/</span>
-      <span>11</span>
+      <span>06</span>
     </div>
   );
 }

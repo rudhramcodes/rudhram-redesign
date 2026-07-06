@@ -11,13 +11,13 @@ import SocialIcon from "./SocialIcon";
 const navItems = [
   ["Business", "/business"],
   ["Our Story", "/#story"],
-  ["Ventures", "/#ventures"],
-  ["Visionaries", "/#visionaries"],
+  ["Ventures", "/ventures"],
+  ["Visionaries", "/visionaries"],
 ];
 
 const aboutItems = [
-  ["About Rudhram", "/business#what-is-rudhram"],
-  ["We are Rudhram", "/business#what-we-are"],
+  ["About Rudhram", "/about-rudhram"],
+  ["We are Rudhram", "/we-are-rudhram"],
 ];
 
 const socialItems = [
@@ -195,7 +195,7 @@ export default function Navbar() {
           ))}
 
           <div className="group relative" data-nav-item>
-            <Link to="/business#what-is-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+            <Link to="/about-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
               About Us
               <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
             </Link>

@@ -8,56 +8,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-
-const ventures = [
-  {
-    name: "Panigrahna",
-    description:
-      "A considered venture shaped around meaningful unions, enduring rituals, and thoughtfully created experiences.",
-    buttonText: "Visit Panigrahna",
-    url: "https://panigrahna.com",
-  },
-  {
-    name: "Aghhori",
-    description:
-      "An uncompromising exploration of transformation, inner strength, and ideas that challenge convention.",
-    buttonText: "Coming Soon",
-  },
-  {
-    name: "House Of Joogi",
-    description:
-      "A creative house for culture-led expression, original thinking, and stories with a distinct point of view.",
-    buttonText: "Coming Soon",
-  },
-  {
-    name: "Damrru",
-    description:
-      "Rhythm, movement, and sonic identity brought together through a bold contemporary lens.",
-    buttonText: "Coming Soon",
-  },
-  {
-    name: "Tandavs",
-    description:
-      "A platform inspired by energy in motion, disciplined expression, and the force of performance.",
-    buttonText: "Coming Soon",
-  },
-  {
-    name: "Kapaalik",
-    description:
-      "A distinctive venture grounded in fearless identity, transformation, and purposeful creation.",
-    buttonText: "Coming Soon",
-  },
-  {
-    name: "Kalyannam",
-    description:
-      "A thoughtful interpretation of celebration, connection, and experiences designed to endure.",
-    buttonText: "Coming Soon",
-  }
-];
+import { Link } from "react-router-dom";
+import { ventures } from "../lib/venturesContent";
 
 const slideDuration = 7000;
-const backgroundImage =
-  "https://images.unsplash.com/photo-1762008312967-beaf3f59984e?auto=format&fit=crop&w=2200&q=85";
+const backgroundImage = ventures[0].image;
 
 export default function VenturesSection() {
   const [current, setCurrent] = useState(0);
@@ -141,19 +96,16 @@ export default function VenturesSection() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white px-5 py-3 text-sm font-semibold text-night transition-colors"
               >
-                {venture.buttonText}
+                Visit {venture.name}
                 <ArrowRightIcon className="size-4" aria-hidden="true" />
               </a>
             ) : (
-              <button
-                data-venture-copy
-                type="button"
-                disabled
-                className="mt-8 inline-flex cursor-not-allowed items-center gap-3 rounded-full border border-white/15 bg-[#cfcfcf] px-5 py-3 text-sm font-semibold text-night/50"
-              >
-                {venture.buttonText}
-              </button>
+              <p data-venture-copy className="mt-8 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/55">{venture.status}</p>
             )}
+            <Link data-venture-copy to="/ventures" className="ml-5 mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-coral">
+              Explore all ventures
+              <ArrowRightIcon className="size-4" aria-hidden="true" />
+            </Link>
           </div>
 
           <div className="hidden shrink-0 items-center gap-2 md:flex">

@@ -10,13 +10,13 @@ import SocialIcon from "./SocialIcon";
 const pageLinks = [
   ["Business", "/business"],
   ["Our Story", "/#story"],
-  ["Ventures", "/#ventures"],
-  ["Visionaries", "/#visionaries"],
+  ["Ventures", "/ventures"],
+  ["Visionaries", "/visionaries"],
 ];
 
 const aboutLinks = [
-  ["About Rudhram", "/business#what-is-rudhram"],
-  ["We are Rudhram", "/business#what-we-are"],
+  ["About Rudhram", "/about-rudhram"],
+  ["We are Rudhram", "/we-are-rudhram"],
 ];
 
 const offices = [
@@ -294,131 +294,132 @@ export default function Footer({ connected = false }) {
       }}
     >
       <div className="mx-auto max-w-[1240px]">
-          {/* Logo + signature */}
-          <div data-animate data-delay="0">
-            <img
-              src="/logo.png"
-              alt="Rudhram"
-              className="h-10 w-auto object-contain object-left"
-            />
-            <h2 className="mt-6 max-w-[16ch] text-[7vw] font-semibold leading-[0.98] tracking-tight sm:text-[32px] md:text-[36px] lg:text-[40px]">
-              From uncertainty,
-              <br />
-              <span className="text-coral">direction.</span>
-            </h2>
-          </div>
+          <div className="grid grid-cols-1 gap-6 py-12 md:grid-cols-2 md:gap-16 md:py-14">
+            <div className="flex flex-col order-1 md:order-2">
+              <div data-animate data-delay="0">
+                <h2 className="text-[7vw] font-semibold leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
+                  From uncertainty,
+                  <br />
+                  <span className="text-coral">direction.</span>
+                </h2>
+              </div>
+              <div data-animate data-delay="140" className="mt-12">
+                <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                  Get in Touch
+                </p>
 
-          {/* Columns */}
-          <div className="grid grid-cols-2 gap-6 py-12 md:gap-16 md:py-14">
-            {/* Explore */}
-            <div data-animate data-delay="80" className="order-2 flex flex-col md:order-1">
-              <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                Explore
-              </p>
-              <nav
-                data-link-list
-                aria-label="Footer navigation"
-                className="flex flex-col gap-y-0.5"
-              >
-                {pageLinks.slice(0, 1).map(([label, href]) => (
-                  <FooterLink key={href} href={href}>
-                    {label}
+                <div className="flex flex-col gap-y-0.5">
+                  <FooterLink href="tel:+917285833101">
+                    +91 72858 33101
                   </FooterLink>
-                ))}
-                <div>
-                  <button
-                    type="button"
-                    aria-controls="footer-about-links"
-                    aria-expanded={aboutOpen}
-                    onClick={() => setAboutOpen((value) => !value)}
-                    className="flex cursor-pointer items-center gap-1.5 py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral focus-visible:outline-2 focus-visible:outline-coral dark:text-cloud/60 dark:hover:text-coral"
-                  >
-                    About Us
-                    <ChevronDownIcon ref={chevronRef} className="size-3.5" aria-hidden="true" />
-                  </button>
+                  <FooterLink href="tel:+917284980137">
+                    +91 72849 80137
+                  </FooterLink>
+                </div>
+
+                {/* Office selector */}
+                <div className="mt-8">
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                    Our Offices
+                  </p>
                   <div
-                    ref={aboutRef}
-                    id="footer-about-links"
-                    inert={!aboutOpen}
-                    aria-hidden={!aboutOpen}
-                    className="h-0 overflow-hidden opacity-0"
+                    className="flex flex-wrap gap-2"
+                    role="tablist"
+                    aria-label="Select an office"
                   >
-                    <div className="my-1 w-fit">
-                      {aboutLinks.map(([label, href]) => (
-                        <div key={href}>
-                          <FooterLink href={href}>{label}</FooterLink>
-                        </div>
-                      ))}
-                    </div>
+                    {offices.map((office, index) => (
+                      <button
+                        key={office.city}
+                        type="button"
+                        role="tab"
+                        aria-selected={activeOffice === index}
+                        onClick={() => setActiveOffice(index)}
+                        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-coral ${
+                          activeOffice === index
+                            ? "bg-coral text-white"
+                            : "border border-muted/20 text-ink hover:border-muted/40 dark:border-white/15 dark:text-cloud/70 dark:hover:border-white/30"
+                        }`}
+                      >
+                        {office.city}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="relative mt-4">
+                    <OfficeAddress
+                      key={offices[activeOffice].city}
+                      label={offices[activeOffice].label}
+                      address={offices[activeOffice].address}
+                    />
                   </div>
                 </div>
-                {pageLinks.slice(1).map(([label, href]) => (
-                  <FooterLink key={href} href={href}>
-                    {label}
-                  </FooterLink>
-                ))}
-              </nav>
-            </div>
 
-            {/* Get in Touch */}
-            <div data-animate data-delay="140" className="order-1 flex flex-col md:order-2">
-              <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                Get in Touch
-              </p>
-
-              <div className="flex flex-col gap-y-0.5">
-                <FooterLink href="tel:+917285833101">
-                  +91 72858 33101
-                </FooterLink>
-                <FooterLink href="tel:+917284980137">
-                  +91 72849 80137
-                </FooterLink>
-              </div>
-
-              {/* Office selector */}
-              <div className="mt-8">
-                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                  Our Offices
-                </p>
+                {/* Social */}
                 <div
-                  className="flex flex-wrap gap-2"
-                  role="tablist"
-                  aria-label="Select an office"
+                  className="mt-8 flex items-center gap-2.5"
+                  aria-label="Rudhram social media"
                 >
-                  {offices.map((office, index) => (
-                    <button
-                      key={office.city}
-                      type="button"
-                      role="tab"
-                      aria-selected={activeOffice === index}
-                      onClick={() => setActiveOffice(index)}
-                      className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-coral ${
-                        activeOffice === index
-                          ? "bg-coral text-white"
-                          : "border border-muted/20 text-ink hover:border-muted/40 dark:border-white/15 dark:text-cloud/70 dark:hover:border-white/30"
-                      }`}
-                    >
-                      {office.city}
-                    </button>
+                  {socials.map(([label, href]) => (
+                    <SocialButton key={href} href={href} label={label} />
                   ))}
                 </div>
-                <div className="relative mt-4">
-                  <OfficeAddress
-                    key={offices[activeOffice].city}
-                    label={offices[activeOffice].label}
-                    address={offices[activeOffice].address}
-                  />
-                </div>
               </div>
+            </div>
 
-              {/* Social */}
-              <div
-                className="mt-8 flex items-center gap-2.5"
-                aria-label="Rudhram social media"
-              >
-                {socials.map(([label, href]) => (
-                  <SocialButton key={href} href={href} label={label} />
-                ))}
+            <div className="flex flex-col order-2 md:order-1">
+              <div data-animate data-delay="0">
+                <img
+                  src="/logo.png"
+                  alt="Rudhram"
+                  className="h-10 w-auto object-contain object-left"
+                />
+              </div>
+              <div data-animate data-delay="80" className="mt-12">
+                <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                  Explore
+                </p>
+                <nav
+                  data-link-list
+                  aria-label="Footer navigation"
+                  className="flex flex-col gap-y-0.5"
+                >
+                  {pageLinks.slice(0, 1).map(([label, href]) => (
+                    <FooterLink key={href} href={href}>
+                      {label}
+                    </FooterLink>
+                  ))}
+                  <div>
+                    <button
+                      type="button"
+                      aria-controls="footer-about-links"
+                      aria-expanded={aboutOpen}
+                      onClick={() => setAboutOpen((value) => !value)}
+                      className="flex cursor-pointer items-center gap-1.5 py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral focus-visible:outline-2 focus-visible:outline-coral dark:text-cloud/60 dark:hover:text-coral"
+                    >
+                      About Us
+                      <ChevronDownIcon ref={chevronRef} className="size-3.5" aria-hidden="true" />
+                    </button>
+                    <div
+                      ref={aboutRef}
+                      id="footer-about-links"
+                      inert={!aboutOpen}
+                      aria-hidden={!aboutOpen}
+                      className="h-0 overflow-hidden opacity-0"
+                    >
+                      <div className="my-1 w-fit">
+                        {aboutLinks.map(([label, href]) => (
+                          <div key={href}>
+                            <FooterLink href={href}>{label}</FooterLink>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {pageLinks.slice(1).map(([label, href]) => (
+                    <FooterLink key={href} href={href}>
+                      {label}
+                    </FooterLink>
+                  ))}
+                </nav>
               </div>
             </div>
           </div>
