@@ -19,26 +19,6 @@ const aboutLinks = [
   ["We are Rudhram", "/we-are-rudhram"],
 ];
 
-const offices = [
-  {
-    city: "Mumbai",
-    label: "Registered Office",
-    address:
-      "1171, 1172 Solitaire Corporate Park, Andheri East, Chakala MIDC, Mumbai, Maharashtra 400093",
-  },
-  {
-    city: "Surat",
-    label: "Operational & Signing Office",
-    address:
-      "SNS Platina, HG1, near University Road, Someshwara Enclave, Vesu, Surat, Gujarat 395007",
-  },
-  {
-    city: "Delhi",
-    label: "Delhi Office",
-    address: "Address confirmation in progress.",
-  },
-];
-
 const socials = [
   ["Instagram", "https://www.instagram.com/rudhramenterprises"],
   ["LinkedIn", "https://www.linkedin.com/in/rudhram-enterprises-844216419/"],
@@ -84,32 +64,6 @@ function SocialButton({ href, label }) {
     >
       <SocialIcon platform={label} />
     </a>
-  );
-}
-
-function OfficeAddress({ label, address }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    waapi.animate(el, {
-      opacity: [0, 1],
-      translateY: [-6, 0],
-      duration: 350,
-      ease: "out(4)",
-    });
-  }, [label, address]);
-
-  return (
-    <address ref={ref} className="not-italic">
-      <h3 className="text-sm font-semibold text-ink dark:text-cloud">
-        {label}
-      </h3>
-      <p className="mt-1 text-xs leading-6 text-ink/70 dark:text-cloud/60">
-        {address}
-      </p>
-    </address>
   );
 }
 
@@ -226,7 +180,6 @@ export default function Footer() {
   const rootRef = useRef(null);
   const aboutRef = useRef(null);
   const chevronRef = useRef(null);
-  const [activeOffice, setActiveOffice] = useState(0);
   const [aboutOpen, setAboutOpen] = useState(false);
   const reducedMotion = useReducedMotion();
 
@@ -300,42 +253,6 @@ export default function Footer() {
                   <FooterLink href="tel:+917284980137">
                     +91 72849 80137
                   </FooterLink>
-                </div>
-
-                {/* Office selector */}
-                <div className="mt-8">
-                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                    Our Offices
-                  </p>
-                  <div
-                    className="flex flex-wrap gap-2"
-                    role="tablist"
-                    aria-label="Select an office"
-                  >
-                    {offices.map((office, index) => (
-                      <button
-                        key={office.city}
-                        type="button"
-                        role="tab"
-                        aria-selected={activeOffice === index}
-                        onClick={() => setActiveOffice(index)}
-                        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-coral ${
-                          activeOffice === index
-                            ? "bg-coral text-white"
-                            : "border border-muted/20 text-ink hover:border-muted/40 dark:border-white/15 dark:text-cloud/70 dark:hover:border-white/30"
-                        }`}
-                      >
-                        {office.city}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="relative mt-4">
-                    <OfficeAddress
-                      key={offices[activeOffice].city}
-                      label={offices[activeOffice].label}
-                      address={offices[activeOffice].address}
-                    />
-                  </div>
                 </div>
 
                 {/* Social */}
