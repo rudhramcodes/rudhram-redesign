@@ -1,150 +1,39 @@
-import { useEffect, useRef } from "react";
-import createGlobe from "cobe";
-
 const CITIES = [
-  { name: "Mumbai", lat: 19.076, lng: 72.8777 },
-  { name: "Surat", lat: 21.1702, lng: 72.8311 },
-  { name: "Delhi", lat: 28.7041, lng: 77.1025 },
+  { name: "Mumbai", x: 25, y: 61, label: "top-5 -translate-x-1/2" },
+  { name: "Surat", x: 25, y: 50, label: "bottom-5 -translate-x-1/2" },
+  { name: "Delhi", x: 41, y: 26, label: "top-5 -translate-x-1/2" },
 ];
 
-const coral = [0.83, 0.38, 0.16];
-const softCoral = [0.95, 0.58, 0.38];
-const toPhi = (lng) => (lng * Math.PI) / 180 + Math.PI / 2;
-const shortestTurn = (target, current) =>
-  Math.atan2(Math.sin(target - current), Math.cos(target - current));
-
-export default function OfficeGlobe({ focus = 0, className = "" }) {
-  const canvasRef = useRef(null);
-  const focusRef = useRef(focus);
-  const dragRef = useRef({ dragging: false, px: 0, py: 0 });
-
-  useEffect(() => {
-    focusRef.current = focus;
-  }, [focus]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const parent = canvas.parentElement;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    let size = parent?.clientWidth || 560;
-    const pixelScale = window.innerWidth < 640 ? 1.35 : 1.6;
-    let phi = toPhi(CITIES[focusRef.current]?.lng || CITIES[0].lng);
-    let theta = 0.42;
-    let running = true;
-    const markers = CITIES.map((city) => ({
-      location: [city.lat, city.lng],
-      size: 0.055,
-      color: softCoral,
-    }));
-
-    const updateMarkers = (active, pulse = 0) => {
-      markers.forEach((marker, index) => {
-        marker.size = index === active ? 0.115 + pulse : 0.05;
-        marker.color = index === active ? coral : softCoral;
-      });
-    };
-    updateMarkers(focusRef.current);
-
-    const globe = createGlobe(canvas, {
-      devicePixelRatio: 1,
-      width: size * pixelScale,
-      height: size * pixelScale,
-      phi,
-      theta,
-      dark: 0,
-      diffuse: 1.15,
-      scale: 1.18,
-      mapSamples: 16000,
-      mapBrightness: 4.6,
-      mapBaseBrightness: 0.08,
-      baseColor: [0.96, 0.95, 0.92],
-      markerColor: coral,
-      glowColor: [1, 1, 1],
-      markerElevation: 0.035,
-      markers,
-      arcs: [
-        { from: [21.1702, 72.8311], to: [19.076, 72.8777] },
-        { from: [19.076, 72.8777], to: [28.7041, 77.1025] },
-        { from: [28.7041, 77.1025], to: [21.1702, 72.8311] },
-      ],
-      arcColor: softCoral,
-      arcWidth: 0.28,
-      arcHeight: 0.18,
-    });
-
-    const onDown = (e) => {
-      const d = dragRef.current;
-      d.dragging = true;
-      d.px = e.clientX;
-      d.py = e.clientY;
-      canvas.setPointerCapture?.(e.pointerId);
-      canvas.style.cursor = "grabbing";
-    };
-
-    const onMove = (e) => {
-      const d = dragRef.current;
-      if (!d.dragging) return;
-      const dx = e.clientX - d.px;
-      const dy = e.clientY - d.py;
-      phi += dx * 0.006;
-      theta = Math.max(0.18, Math.min(0.82, theta + dy * 0.006));
-      d.px = e.clientX;
-      d.py = e.clientY;
-    };
-
-    const onUp = () => {
-      dragRef.current.dragging = false;
-      canvas.style.cursor = "grab";
-    };
-
-    const resizeObserver = new ResizeObserver(([entry]) => {
-      size = Math.max(320, entry.contentRect.width);
-      globe.update({ width: size * pixelScale, height: size * pixelScale });
-    });
-
-    canvas.style.cursor = "grab";
-    canvas.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    if (parent) resizeObserver.observe(parent);
-
-    function frame() {
-      if (!running) return;
-      if (!dragRef.current.dragging) {
-        const idx = focusRef.current;
-        const target = CITIES[idx] || CITIES[0];
-        phi += shortestTurn(toPhi(target.lng), phi) * (reducedMotion ? 0.08 : 0.035);
-        theta += (0.42 - theta) * 0.035;
-        if (!reducedMotion) phi += 0.0012;
-      }
-      const pulse = reducedMotion ? 0 : (Math.sin(performance.now() / 360) + 1) * 0.018;
-      updateMarkers(focusRef.current, pulse);
-      globe.update({
-        phi,
-        theta,
-        markers,
-      });
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-
-    return () => {
-      running = false;
-      globe.destroy();
-      resizeObserver.disconnect();
-      canvas.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-    };
-  }, []);
-
+export default function OfficeGlobe({ focus = 0, onSelect, className = "" }) {
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      style={{ width: "100%", height: "100%", touchAction: "none" }}
-    />
+    <div className={`relative overflow-hidden rounded-[28px] bg-white shadow-[0_22px_70px_rgba(49,49,49,0.1)] ${className}`}>
+      <img
+        src="/offices-india-map.webp"
+        alt="Map of India"
+        loading="lazy"
+        decoding="async"
+        className="size-full scale-[1.34] object-cover object-[35%_35%]"
+      />
+
+      {CITIES.map((city, index) => {
+        const active = focus === index;
+        return (
+          <button
+            key={city.name}
+            type="button"
+            onClick={() => onSelect?.(index)}
+            aria-label={`Show ${city.name} office`}
+            aria-pressed={active}
+            className="group absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-coral"
+            style={{ left: `${city.x}%`, top: `${city.y}%` }}
+          >
+            <span className={`block rounded-full shadow-md transition-transform duration-200 group-hover:scale-110 ${active ? "size-5 bg-coral ring-4 ring-white" : "size-3.5 bg-coral/85 ring-2 ring-white"}`} />
+            <span className={`absolute left-1/2 rounded-sm px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] shadow-sm transition-colors duration-200 ${city.label} ${active ? "bg-coral text-white" : "bg-white text-coral"}`}>
+              {city.name}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }

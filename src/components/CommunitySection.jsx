@@ -72,7 +72,7 @@ export default function CommunitySection() {
                 key={leader.image}
                 src={leader.image}
                 alt={leader.name}
-                className="h-56 w-full object-cover object-center md:h-full md:min-h-0"
+                className="h-fit w-full bg-[#f7f7f5] object-contain object-top md:h-full md:min-h-0 md:object-cover md:object-center"
               />
               <div className="community-founder-content flex min-h-64 flex-col p-6 md:min-h-0">
                 <p className="font-mono text-xs uppercase text-coral">Visionaries</p>

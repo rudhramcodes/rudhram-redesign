@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import SocialIcon from "./SocialIcon";
 
 const navItems = [
+  ["Home", "/"],
   ["Business", "/business"],
-  ["Our Story", "/#story"],
   ["Ventures", "/ventures"],
   ["Visionaries", "/visionaries"],
 ];

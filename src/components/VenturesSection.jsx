@@ -74,24 +74,31 @@ export default function VenturesSection() {
             <p data-venture-copy className="mt-6 max-w-[50ch] text-base leading-7 text-white/75 sm:text-lg">
               {venture.description}
             </p>
-            {venture.url ? (
-              <a
-                data-venture-copy
-                href={venture.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/30 bg-white px-5 py-3 text-sm font-semibold text-night transition-colors"
-              >
-                Visit {venture.name}
-                <ArrowRightIcon className="size-4" aria-hidden="true" />
-              </a>
-            ) : (
-              <p data-venture-copy className="mt-8 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/55">{venture.status}</p>
+            {!venture.url && (
+              <p data-venture-copy className="mt-6 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/55">
+                {venture.status}
+              </p>
             )}
-            <Link data-venture-copy to="/ventures" className="ml-5 mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/30 underline-offset-4 hover:decoration-coral">
-              Explore all ventures
-              <ArrowRightIcon className="size-4" aria-hidden="true" />
-            </Link>
+            <div data-venture-copy className="mt-8 flex flex-wrap items-center gap-3">
+              {venture.url ? (
+                <a
+                  href={venture.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-night transition-colors hover:bg-white/90 focus-visible:outline-3 focus-visible:outline-white"
+                >
+                  Visit {venture.name}
+                  <ArrowRightIcon className="size-4" aria-hidden="true" />
+                </a>
+              ) : null}
+              <Link
+                to="/ventures"
+                className="inline-flex items-center gap-3 rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-night focus-visible:outline-3 focus-visible:outline-white"
+              >
+                Explore all ventures
+                <ArrowRightIcon className="size-4" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
 
           <div className="hidden shrink-0 items-center gap-2 md:flex">
