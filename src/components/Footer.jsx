@@ -238,7 +238,7 @@ export default function Footer() {
                 <h2 className="text-[7vw] font-semibold leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
                   From uncertainty,
                   <br />
-                  <span className="text-coral">direction.</span>
+                  <span className="text-coral italic font-display font-normal">direction.</span>
                 </h2>
               </div>
               <div data-animate data-delay="140" className="mt-12">
