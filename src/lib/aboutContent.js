@@ -73,6 +73,7 @@ export const teamRoster = [
   {
     name: "Vrunda Gohil",
     role: "Social Impact Lead",
+    image: "/vrunda.webp",
     responsibility: "Purpose, social responsibility and alignment with Vir Trust and Vrundavan Trust.",
   },
   {
@@ -88,6 +89,7 @@ export const teamRoster = [
   {
     name: "Faizal Shaikh",
     role: "CTO",
+    image: "/faizal.jpeg",
     responsibility: "Internal technology systems, the Rudhram application, automation and digital scalability.",
   },
   {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import BusinessPage from "./pages/BusinessPage";
 import AboutRudhramPage from "./pages/AboutRudhramPage";
@@ -7,6 +7,7 @@ import WeAreRudhramPage from "./pages/WeAreRudhramPage";
 import VenturesPage from "./pages/VenturesPage";
 import VisionariesPage from "./pages/VisionariesPage";
 import LegalPage from "./components/LegalPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function ScrollToLocation() {
   const { pathname, hash } = useLocation();
@@ -38,7 +39,7 @@ export default function App() {
         <Route path="/visionaries" element={<VisionariesPage />} />
         <Route path="/privacy-policy" element={<LegalPage type="privacy" />} />
         <Route path="/terms-and-conditions" element={<LegalPage type="terms" />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

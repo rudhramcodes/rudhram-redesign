@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { waapi, stagger } from "animejs";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import SocialIcon from "./SocialIcon";
@@ -49,8 +49,6 @@ const legalLinks = [
   ["Privacy", "/privacy-policy"],
   ["Terms", "/terms-and-conditions"],
 ];
-
-const connectedTravel = 144;
 
 function FooterLink({ href, children }) {
   if (href.startsWith("/")) {
@@ -224,18 +222,13 @@ function useScrollIn(ref) {
   }, [ref]);
 }
 
-export default function Footer({ connected = false }) {
+export default function Footer() {
   const rootRef = useRef(null);
   const aboutRef = useRef(null);
   const chevronRef = useRef(null);
   const [activeOffice, setActiveOffice] = useState(0);
   const [aboutOpen, setAboutOpen] = useState(false);
   const reducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: rootRef,
-    offset: ["start end", "end end"],
-  });
-  const footerY = useTransform(scrollYProgress, [0, 1], [connectedTravel, 0]);
 
   useScrollIn(rootRef);
 
@@ -281,17 +274,9 @@ export default function Footer({ connected = false }) {
   }, [aboutOpen, reducedMotion]);
 
   return (
-    <motion.footer
+    <footer
       ref={rootRef}
-      className={`overflow-hidden bg-cloud px-6 pb-7 pt-20 sm:px-10 sm:pb-9 md:pt-28 lg:px-16 dark:bg-night ${
-        connected
-          ? "relative z-20 rounded-t-[40px] shadow-[0_-18px_60px_rgb(0_0_0/0.16)] will-change-transform md:rounded-t-[56px]"
-          : ""
-      }`}
-      style={{
-        marginTop: connected ? -connectedTravel : 0,
-        y: reducedMotion || !connected ? 0 : footerY,
-      }}
+      className="overflow-hidden bg-cloud px-6 pb-7 pt-20 sm:px-10 sm:pb-9 md:pt-28 lg:px-16 dark:bg-night"
     >
       <div className="mx-auto max-w-[1240px]">
           <div className="grid grid-cols-1 gap-6 py-12 md:grid-cols-2 md:gap-16 md:py-14">
@@ -447,6 +432,6 @@ export default function Footer({ connected = false }) {
             </div>
           </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

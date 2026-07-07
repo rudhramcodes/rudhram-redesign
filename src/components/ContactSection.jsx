@@ -75,8 +75,8 @@ export default function ContactSection() {
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
                   Email
                 </p>
-                <a href="mailto:hello@rudhram.com" className="mt-1 block transition-colors hover:text-coral">
-                  hello@rudhram.com
+                <a href="mailto:hello@rudhramenterprises.com" className="mt-1 block transition-colors hover:text-coral">
+                  hello@rudhramenterprises.com
                 </a>
               </div>
             </div>

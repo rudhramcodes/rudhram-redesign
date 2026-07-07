@@ -26,11 +26,9 @@ export default function HomePage() {
       <CommunitySection />
       <OurStorySection />
       <CareersSection />
+      <VenturesSection />
       <ContactSection />
-      <div className="relative isolate overflow-hidden">
-        <VenturesSection />
-        <Footer connected />
-      </div>
+      <Footer />
     </div>
   );
 }

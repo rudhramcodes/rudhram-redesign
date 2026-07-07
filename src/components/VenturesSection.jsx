@@ -7,7 +7,6 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ventures } from "../lib/venturesContent";
 
@@ -19,13 +18,6 @@ export default function VenturesSection() {
   const [playing, setPlaying] = useState(true);
   const rootRef = useRef(null);
   const contentRef = useRef(null);
-  const reducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: rootRef,
-    offset: ["start end", "end start"],
-  });
-  const backdropY = useTransform(scrollYProgress, [0, 1], [-56, 56]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [-24, 24]);
   const venture = ventures[current];
 
   const selectVenture = (index) => {
@@ -57,22 +49,16 @@ export default function VenturesSection() {
       aria-labelledby="ventures-heading"
       className="relative isolate h-[100svh] min-h-[640px] bg-night text-white"
     >
-      <motion.div
-        className="pointer-events-none absolute -top-16 -bottom-48 inset-x-0 will-change-transform"
-        style={{ y: reducedMotion ? 0 : backdropY }}
-      >
+      <div className="pointer-events-none absolute inset-0">
         <img
           src={backgroundImage}
           alt=""
           className="h-full w-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-night/50" aria-hidden="true" />
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-16 pt-32 will-change-transform sm:px-10 md:pb-24 md:pt-36 lg:px-14"
-        style={{ y: reducedMotion ? 0 : contentY }}
-      >
+      <div className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-16 pt-32 sm:px-10 md:pb-24 md:pt-36 lg:px-14">
         <div className="flex flex-1 items-end justify-between gap-8 pb-10 md:pb-14">
           <div ref={contentRef} aria-live="polite" className="max-w-2xl">
             <p
@@ -184,7 +170,7 @@ export default function VenturesSection() {
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
