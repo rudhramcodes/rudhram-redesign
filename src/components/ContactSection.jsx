@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckIcon, ChevronDownIcon, MagnifyingGlassIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { animate } from "animejs";
 import { socialLinks } from "../lib/visionariesContent";
 import SocialIcon from "./SocialIcon";
 
@@ -455,7 +456,7 @@ export default function ContactSection() {
               </div>
             </aside>
 
-            <div className="p-4 pt-7 sm:p-7 md:col-span-7 md:p-6 lg:p-8">
+            <div className="p-3 pt-7 sm:p-7 md:col-span-7 md:p-6 lg:p-8">
               {submitted ? (
                 <div className="flex min-h-[360px] flex-col justify-center">
                   <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-coral">
@@ -473,7 +474,7 @@ export default function ContactSection() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="contact-name" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
-                        Name
+                        Name <span className="text-coral">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -492,7 +493,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
-                        Email
+                        Email <span className="text-coral">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -512,7 +513,7 @@ export default function ContactSection() {
                     </div>
                     <div className="sm:col-span-2">
                       <label htmlFor="contact-phone" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
-                        Phone
+                        Phone <span className="text-coral">*</span>
                       </label>
                       <div className="mt-2 flex gap-2">
                         <CountryCodeSelect value={countryCode} onChange={setCountryCode} />
@@ -557,7 +558,10 @@ export default function ContactSection() {
                   <div className="group mt-6 flex items-center gap-2">
                     <button
                       type="submit"
-                      className="cursor-pointer rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-coral focus-visible:outline-2 focus-visible:outline-coral"
+                      onClick={(e) => {
+                        animate(e.currentTarget, { scale: [1, 0.94, 1], duration: 300, easing: "easeOutCubic" });
+                      }}
+                      className="cursor-pointer rounded-full border border-ink/10 bg-[#f7f6f2] px-5 py-3 text-sm font-semibold transition-colors duration-200 hover:border-coral hover:bg-coral hover:text-white focus-visible:outline-2 focus-visible:outline-coral"
                     >
                       Send message
                     </button>

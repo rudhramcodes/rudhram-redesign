@@ -145,7 +145,7 @@ export default function VenturesSection() {
           </span>
         </div>
 
-        <div className="venture-rail mt-5 flex gap-2 overflow-x-auto pb-1 md:mt-0 md:grid md:grid-cols-8 md:overflow-visible">
+        <div className="mt-5 grid grid-cols-4 gap-3 pb-1 md:mt-0 md:grid-cols-8 md:gap-2">
           {ventures.map((item, index) => {
             const selected = index === current;
             return (
@@ -155,7 +155,7 @@ export default function VenturesSection() {
                 onClick={() => selectVenture(index)}
                 aria-label={`Show ${item.name}`}
                 aria-current={selected ? "true" : undefined}
-                className="group min-h-14 min-w-[132px] cursor-pointer px-1 pt-3 text-left focus-visible:outline-3 focus-visible:outline-white md:min-w-0"
+                className="group min-h-12 cursor-pointer pt-2 text-center focus-visible:outline-3 focus-visible:outline-white md:min-h-14 md:px-1 md:pt-3 md:text-left"
               >
                 <span className="relative mb-2 block h-0.5 overflow-hidden bg-white/20" aria-hidden="true">
                   {selected && (
@@ -170,7 +170,7 @@ export default function VenturesSection() {
                     />
                   )}
                 </span>
-                <span className={`block text-[11px] whitespace-nowrap font-semibold leading-4 ${selected ? "text-white" : "text-white/55"}`}>
+                <span className={`block text-[10px] font-semibold leading-3.5 md:text-[11px] md:leading-4 md:whitespace-nowrap ${selected ? "text-white" : "text-white/55"}`}>
                   {item.name}
                 </span>
               </button>
