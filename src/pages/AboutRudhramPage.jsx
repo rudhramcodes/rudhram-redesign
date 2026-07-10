@@ -85,7 +85,7 @@ function Identity() {
           </Reveal>
           <Reveal className="space-y-8 md:col-span-6 md:col-start-7" delay={0.1}>
             <p className="text-lg leading-8 text-ink/70">The name Rudhram reflects transformation: the courage to move through uncertainty, stay connected to values and build meaning beyond ordinary business.</p>
-            <p className="text-lg leading-8 text-ink/70">The Trishul-inspired mark represents creation, preservation and transformation—not only as symbols, but as operating principles.</p>
+            <p className="text-lg leading-8 text-ink/70">The Trishul-inspired mark represents creation, preservation and transformation not only as symbols, but as operating principles.</p>
             <blockquote className="border-t border-coral pt-6 font-display text-4xl leading-none tracking-[-0.035em] sm:text-5xl">Leading, <span className="italic text-coral">“What’s Next.”</span></blockquote>
           </Reveal>
         </div>
@@ -154,11 +154,17 @@ function OperatingSystem() {
           <Reveal className="md:col-span-4">
             <h3 className="text-3xl font-semibold tracking-[-0.04em]">Governance principles.</h3>
           </Reveal>
-          <Reveal className="md:col-span-7 md:col-start-6" delay={0.1}>
-            <ul className="grid gap-x-8 sm:grid-cols-2">
-              {governancePrinciples.map((principle) => <li key={principle} className="border-t border-white/20 py-5 text-sm leading-7 text-white/70">{principle}</li>)}
-            </ul>
-          </Reveal>
+          <div className="md:col-span-7 md:col-start-6">
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+              {governancePrinciples.map((principle, index) => (
+                <Reveal key={principle} delay={index * 0.06}>
+                  <article className="rounded-sm bg-white/5 p-4">
+                    <p className="text-sm leading-6 text-white/80">{principle}</p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

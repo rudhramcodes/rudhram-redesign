@@ -56,7 +56,7 @@ export default function Hero({ current, playing, onSelect, onNext, onTogglePlayi
             <span>0{current + 1}</span>
             <span>{active.subHeading}</span>
           </div>
-          <h1 className="text-[clamp(3.5rem,8vw,7.5rem)] font-semibold leading-[.9] tracking-[-0.055em]">{active.title}</h1>
+          <h1 className="text-[clamp(3.5rem,8vw,7.5rem)] font-medium leading-[.9] tracking-[-0.055em]">{active.title}</h1>
           <p className="mt-8 max-w-2xl text-base leading-6 text-white/85 sm:text-lg sm:leading-7">{active.description}</p>
         </div>
 

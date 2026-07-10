@@ -35,8 +35,8 @@ export default function OurStorySection() {
         <header className="grid gap-7 md:grid-cols-12 md:items-end md:gap-8">
           <div className="md:col-span-6">
             <p className="mb-5 text-xs font-semibold uppercase text-coral">Our Story</p>
-            <h2 id="story-heading" className="max-w-[12ch] text-[40px] font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-              We did not start with a <span className="font-display font-normal italic text-coral">Perfect Plan.</span>
+            <h2 id="story-heading" className="max-w-[12ch] text-[40px] font-medium leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              We did not start with a <span className="font-display text-coral">Perfect Plan.</span>
             </h2>
           </div>
           <p className="max-w-[58ch] tracking-tight text-lg leading-8 text-ink md:col-span-5 md:col-start-8">

@@ -2,7 +2,7 @@ export const identityLayers = [
   {
     number: "01",
     title: "Rudhram Group",
-    text: "The founding people, bond, ethics, experience and mindset that gave birth to Rudhram. It is the emotional and philosophical foundation—who we are and why we exist.",
+    text: "The founding people, bond, ethics, experience and mindset that gave birth to Rudhram. It is the emotional and philosophical foundation, who we are and why we exist.",
   },
   {
     number: "02",
@@ -20,7 +20,7 @@ export const operatingStandards = [
   {
     title: "Inspiring",
     meaning: "Purpose beyond business.",
-    standard: "Every venture must create emotional connection, trust and meaningful value—not exist only to make money.",
+    standard: "Every venture must create emotional connection, trust and meaningful value not exist only to make money.",
   },
   {
     title: "Innovative",

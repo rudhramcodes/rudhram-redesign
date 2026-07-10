@@ -71,7 +71,7 @@ function BusinessHero() {
             animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Ideas need more than <span className="font-display font-normal italic text-coral">belief.</span> They need a system.
+            Ideas need more than <span className="font-display text-coral">belief.</span> They need a system.
           </motion.h1>
         </div>
 
@@ -244,11 +244,9 @@ function Stewardship() {
           </Reveal>
           <Reveal className="md:col-span-6 md:col-start-7" delay={0.1}>
             <h3 className="text-2xl font-semibold tracking-[-0.03em]">Our mission</h3>
-            <ul className="mt-6 space-y-4 text-base leading-7 text-ink/70">
-              <li>Give every serious idea a clear strategic and operating foundation.</li>
-              <li>Build distinct brands without losing the advantage of shared knowledge.</li>
-              <li>Create businesses, intellectual property, and cultural value that compound over time.</li>
-            </ul>
+            <p className="mt-6 text-base leading-7 text-ink/70">
+              Build distinct brands with shared knowledge, disciplined support, and a foundation built to outlast any single cycle.
+            </p>
           </Reveal>
         </div>
 

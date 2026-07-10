@@ -33,8 +33,6 @@ export const buildingBlocks = [
   ["Cultural experiences", "Live formats that create participation, memory, and belonging."],
   ["Brand systems", "Distinct identities supported by one disciplined operating philosophy."],
   ["Digital platforms", "Useful technology that strengthens access, distribution, and continuity."],
-  ["Creative networks", "Long-term relationships with makers, operators, and specialist talent."],
-  ["Enduring assets", "Businesses and ideas built for relevance beyond a single cycle."],
 ];
 
 export const pillars = [

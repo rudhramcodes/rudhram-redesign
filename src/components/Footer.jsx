@@ -235,7 +235,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 gap-6 py-12 md:grid-cols-2 md:gap-16 md:py-14">
             <div className="flex flex-col order-1 md:order-2">
               <div data-animate data-delay="0">
-                <h2 className="text-[7vw] font-semibold leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
+                <h2 className="text-[7vw] font-medium leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
                   From uncertainty,
                   <br />
                   <span className="text-coral italic font-display font-normal">direction.</span>

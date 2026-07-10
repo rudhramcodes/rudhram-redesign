@@ -386,8 +386,8 @@ export default function ContactSection() {
               <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-coral">
                 Contact
               </p>
-              <h2 className="mt-4 text-4xl font-semibold leading-[0.96] tracking-[-0.04em] sm:max-w-[9ch] sm:text-5xl lg:text-7xl">
-                Let&rsquo;s build with <span className="font-display font-normal italic text-coral">belief.</span>
+              <h2 className="mt-4 text-4xl font-medium leading-[0.96] tracking-[-0.04em] sm:max-w-[9ch] sm:text-5xl lg:text-7xl">
+                Let&rsquo;s build with <span className="font-display text-coral">belief.</span>
               </h2>
             </div>
             <p className="max-w-[36ch] text-sm leading-6 text-ink/60 md:col-span-4 md:col-start-9 md:text-right md:text-base md:leading-7">

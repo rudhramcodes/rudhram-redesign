@@ -68,7 +68,7 @@ export default function VenturesSection() {
             >
               Our Ventures
             </p>
-            <h2 data-venture-copy className="text-5xl font-semibold leading-none tracking-normal sm:text-6xl lg:text-7xl">
+            <h2 data-venture-copy className="text-5xl font-medium leading-none tracking-normal sm:text-6xl lg:text-7xl">
               {venture.name}
             </h2>
             <p data-venture-copy className="mt-6 max-w-[50ch] text-base leading-7 text-white/75 sm:text-lg">

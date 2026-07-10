@@ -21,8 +21,8 @@ export default function OfficesSection() {
           <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink/45">
             Our Offices
           </p>
-          <h2 className="mt-3 max-w-[11ch] text-[clamp(2.25rem,4.8vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.04em] text-ink">
-            Three cities, <span className="font-display font-normal italic text-coral">one purpose.</span>
+          <h2 className="mt-3 max-w-[11ch] text-[clamp(2.25rem,4.8vw,4.8rem)] font-medium leading-[0.96] tracking-[-0.04em] text-ink">
+            Three cities, <span className="font-display text-coral">one purpose.</span>
           </h2>
 
           <div className="mt-7 grid gap-3">

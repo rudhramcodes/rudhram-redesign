@@ -35,7 +35,7 @@ function StoryHero() {
           animate={reducedMotion ? undefined : { opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.45 }}
         >
-          <p className="max-w-[52ch] text-sm leading-6 text-ink/65 md:col-span-6 md:text-base md:leading-7">Rudhram began in the space between what was expected and what felt true—a story of people who chose belief before proof.</p>
+          <p className="max-w-[52ch] text-sm leading-6 text-ink/65 md:col-span-6 md:text-base md:leading-7">Rudhram began in the space between what was expected and what felt true. A story of people who chose belief before proof.</p>
           <a href="#beginning" className="group flex w-fit items-center gap-3 text-sm font-semibold md:col-span-2 md:col-start-11 md:justify-self-end">
             Begin the story
             <span className="flex size-9 items-center justify-center rounded-full border border-ink/25 transition-colors group-hover:border-coral group-hover:bg-coral group-hover:text-white"><ArrowDownIcon className="size-4" aria-hidden="true" /></span>
