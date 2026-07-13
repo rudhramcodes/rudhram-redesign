@@ -110,17 +110,17 @@ export const storyTimeline = [
   {
     number: "01",
     title: "The road that was not his.",
-    text: "Shivang grew up as a bright student with a familiar path in front of him. He chose commerce and began Chartered Accountancy, but during the second stage he accepted a difficult truth: it was a respectable path, but not the life he wanted to build.",
+    text: "Shivang Vir grew up as a bright student with a familiar path in front of him. He chose commerce and began Chartered Accountancy, but during the second stage he accepted a difficult truth: it was a respectable path, but not the life he wanted to build.",
   },
   {
     number: "02",
     title: "A question on a drive.",
-    text: "When Shivang had no answer for what came next, Viral paused his work, took him for a drive and asked what he truly wanted. He did not force clarity. He offered space, then invited Shivang into the family photography business.",
+    text: "When Shivang Vir had no answer for what came next, Viral paused his work, took him for a drive and asked what he truly wanted. He did not force clarity. He offered space, then invited Shivang Vir into the family photography business.",
   },
   {
     number: "03",
     title: "Mumbai, 2021.",
-    text: "Photography revealed a world of stories, creativity, people and trust. Shivang and Mukund moved to Mumbai to learn cinema—one a director, the other a writer—carrying a dream before its final shape was clear.",
+    text: "Photography revealed a world of stories, creativity, people and trust. Shivang Vir and Mukund moved to Mumbai to learn cinema—one a director, the other a writer—carrying a dream before its final shape was clear.",
   },
   {
     number: "04",
@@ -135,7 +135,7 @@ export const personalStories = [
     role: "The founder's inner strength",
     image: "/shivang.webp",
     paragraphs: [
-      "Shivang's struggle was the struggle of identity before ambition—the willingness to leave a safer path and carry the pressure of creating his own meaning.",
+      "Shivang Vir's struggle was the struggle of identity before ambition—the willingness to leave a safer path and carry the pressure of creating his own meaning.",
       "He believes a serious thought is not random. When Mahadev, the universe, or life places an idea in the mind, it carries a responsibility to evolve, learn and act. His ambition is not merely to build a company, but to make Rudhram a masterpiece.",
     ],
   },
@@ -145,7 +145,7 @@ export const personalStories = [
     image: "/mukund.webp",
     paragraphs: [
       "Mukund was never only a school friend. At every important step, his presence said: do it, I am there. Their bond is mature enough to question, debate and remain united.",
-      "Shivang is a director and Mukund is a writer. A director needs a script; a writer needs someone who can bring the written world alive. That creative balance became operational: vision needs structure, and structure needs imagination.",
+      "Shivang Vir is a director and Mukund is a writer. A director needs a script; a writer needs someone who can bring the written world alive. That creative balance became operational: vision needs structure, and structure needs imagination.",
     ],
   },
   {
@@ -153,7 +153,7 @@ export const personalStories = [
     role: "The chairman and living example",
     image: "/viral.webp",
     paragraphs: [
-      "Viral taught less through speeches and more through work. His quiet confidence—‘I know you will do it’—gave Shivang the courage to begin before proof existed.",
+      "Viral taught less through speeches and more through work. His quiet confidence—‘I know you will do it’—gave Shivang Vir the courage to begin before proof existed.",
       "More than three decades in wedding photography, international work and years of mentorship made him a source of experience, stability and patience. In Rudhram, he represents the belief that meaningful things are built through work.",
     ],
   },

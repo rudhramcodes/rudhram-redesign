@@ -5,17 +5,17 @@ const storyMoments = [
   {
     marker: "01",
     title: "An honest pause",
-    text: "Shivang had cleared the first step towards becoming a Chartered Accountant. Then he admitted something difficult: it was a good path, but it was not his path.",
+    text: "Shivang Vir had cleared the first step towards becoming a Chartered Accountant. Then he admitted something difficult: it was a good path, but it was not his path.",
   },
   {
     marker: "02",
     title: "A question on a drive",
-    text: "His father, Viral Gohil, did not offer a lecture or demand an answer. He simply asked, ‘What do you really want to do?’ When Shivang had no answer, he gave him space to find one.",
+    text: "His father, Viral Gohil, did not offer a lecture or demand an answer. He simply asked, ‘What do you really want to do?’ When Shivang Vir had no answer, he gave him space to find one.",
   },
   {
     marker: "03",
     title: "Mumbai, 2021",
-    text: "The camera led Shivang towards storytelling. He and Mukund Barrdoliwala arrived in Mumbai to learn cinema, carrying a dream of films and the courage to begin before everything was clear.",
+    text: "The camera led Shivang Vir towards storytelling. He and Mukund Barrdoliwala arrived in Mumbai to learn cinema, carrying a dream of films and the courage to begin before everything was clear.",
   },
   {
     marker: "04",

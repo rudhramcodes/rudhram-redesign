@@ -5,7 +5,7 @@ export const visionaries = [
     lens: "Purpose as responsibility",
     image: "/shivang.webp",
     quote: "Every serious idea carries a responsibility to evolve, learn, and act.",
-    viewpoint: "Shivang believes a thought placed by Mahadev, the universe, or life is not random. Purpose must connect business ambition with growth as a human being and value for others. His standard is not simply a successful company, but a masterpiece built with intention, discipline, emotion, structure, and legacy.",
+    viewpoint: "Shivang Vir believes a thought placed by Mahadev, the universe, or life is not random. Purpose must connect business ambition with growth as a human being and value for others. His standard is not simply a successful company, but a masterpiece built with intention, discipline, emotion, structure, and legacy.",
   },
   {
     name: "Mukund Barrdoliwala",
