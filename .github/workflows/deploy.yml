@@ -24,20 +24,22 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ftp
-          local-dir: dist/
-          server-dir: public_html/
-          dangerous-clean-slate: true
-          exclude: |
-            **/.git*
-            **/.git*/**
+      - name: Deploy via FTP (curl)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          cd dist
+          find . -type f | while read file; do
+            remote="public_html/${file#./}"
+            echo "Uploading: $file -> $remote"
+            curl -s --ftp-create-dirs --ssl \
+              --user "$FTP_USER:$FTP_PASS" \
+              -T "$file" \
+              "ftp://$FTP_HOST:$FTP_PORT/$remote" || echo "FAILED: $file"
+          done
 
       - name: Purge LiteSpeed cache
         run: |
