@@ -28,13 +28,16 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
       - name: Deploy via FTP (lftp mirror)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
         run: |
-          lftp -c "
-            set ftp:ssl-allow no;
-            set ftp:use-feat no;
-            open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -p ${{ secrets.FTP_PORT }} ${{ secrets.FTP_HOST }};
-            mirror -R --delete --verbose dist/ public_html/
-          "
+          lftp -e "set ftp:ssl-allow no; set ftp:use-feat no; mirror -R --delete --verbose dist/ public_html/; quit" \
+            -u "$FTP_USER","$FTP_PASS" \
+            -p "$FTP_PORT" \
+            "$FTP_HOST"
 
       - name: Purge LiteSpeed cache
         run: |
