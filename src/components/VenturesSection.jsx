@@ -10,7 +10,7 @@ import { stagger, waapi } from "animejs";
 import { Link } from "react-router-dom";
 import { ventures } from "../lib/venturesContent";
 
-const slideDuration = 7000;
+const slideDuration = 10000;
 const backgroundImage = ventures[0].image;
 
 export default function VenturesSection() {

@@ -57,7 +57,7 @@ body {
 }
 
 .slide-progress--playing {
-  animation: slide-progress 6s linear forwards;
+  animation: slide-progress 12s linear forwards;
 }
 
 .facebook-post-frame {
