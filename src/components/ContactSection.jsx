@@ -358,7 +358,7 @@ export default function ContactSection() {
     const errs = validateForm(formData);
     if (errs.length) { setErrors(errs); setLoading(false); return; }
     try {
-      const res = await axios.post("/api/contact", {
+      const res = await axios.post("https://rudhram-api.onrender.com/api/contact", {
         ...formData,
         botcheck: undefined,
       });
