@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckIcon, ChevronDownIcon, MagnifyingGlassIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { animate } from "animejs";
+import axios from "axios";
 import { socialLinks } from "../lib/visionariesContent";
 import SocialIcon from "./SocialIcon";
 
@@ -328,26 +329,18 @@ function Reveal({ children, className = "", delay = 0 }) {
 const section = "px-6 py-24 sm:px-10 md:py-32 lg:px-16 lg:py-40";
 const container = "mx-auto w-full max-w-[1240px]";
 
-function validate(name, value) {
-  switch (name) {
-    case "name":
-      return value.trim().length < 2 ? "Please enter your name" : "";
-    case "email":
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : "Please enter a valid email";
-    case "phone":
-      return value.length === 10 && /^\d+$/.test(value) ? "" : "Enter a valid 10-digit number";
-    case "message":
-      return value.trim() && value.trim().length < 10 ? "Message must be at least 10 characters" : "";
-    default:
-      return "";
-  }
+function validateForm(data) {
+  const errs = [];
+  if (!data.name || data.name.trim().length < 2) errs.push("Please enter your name");
+  if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errs.push("Please enter a valid email");
+  if (!data.phone || !/^\d{10}$/.test(data.phone.replace(/\D/g, ""))) errs.push("Enter a valid 10-digit number");
+  return errs;
 }
 
 export default function ContactSection() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [countryCode, setCountryCode] = useState("+91");
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", countryCode: "+91", message: "" });
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
@@ -355,27 +348,30 @@ export default function ContactSection() {
     let val = value;
     if (name === "phone") val = value.replace(/\D/g, "").slice(0, 10);
     if (name === "email") val = value.toLowerCase();
-    setForm((prev) => ({ ...prev, [name]: val }));
-    if (touched[name]) setErrors((prev) => ({ ...prev, [name]: validate(name, val, form) }));
+    setFormData((prev) => ({ ...prev, [name]: val }));
   };
 
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched((prev) => ({ ...prev, [name]: true }));
-    setErrors((prev) => ({ ...prev, [name]: validate(name, value, form) }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = {};
-    Object.keys(form).forEach((key) => { newErrors[key] = validate(key, form[key], form); });
-    setErrors(newErrors);
-    setTouched({ name: true, email: true, phone: true, message: true });
-    if (Object.values(newErrors).some(Boolean)) return;
-    setSubmitted(true);
+    setLoading(true);
+    setErrors([]);
+    const errs = validateForm(formData);
+    if (errs.length) { setErrors(errs); setLoading(false); return; }
+    try {
+      const res = await axios.post("/api/contact", {
+        ...formData,
+        botcheck: undefined,
+      });
+      if (res.data.ok) setSubmitted(true);
+    } catch (err) {
+      const msg = err.response?.data?.errors
+        ? err.response.data.errors.join(", ")
+        : err.response?.data?.error || "Something went wrong, please try again.";
+      setErrors([msg]);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const isInvalid = (name) => touched[name] && errors[name];
 
   return (
     <section id="contact" data-section="contact" className={`${section} bg-[#f7f6f2]`}>
@@ -471,6 +467,15 @@ export default function ContactSection() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} noValidate>
+                  {/* Honeypot — hidden from users, catches bots */}
+                  <input name="botcheck" className="absolute -left-[9999px]" tabIndex={-1} autoComplete="off" />
+
+                  {errors.length > 0 && (
+                    <div className="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">
+                      {errors.map((e, i) => <p key={i}>{e}</p>)}
+                    </div>
+                  )}
+
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="contact-name" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
@@ -480,16 +485,12 @@ export default function ContactSection() {
                         id="contact-name"
                         name="name"
                         type="text"
-                        value={form.name}
+                        value={formData.name}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         placeholder="Your name"
                         autoCapitalize="words"
-                        className={`mt-2 block h-12 w-full rounded-2xl border bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25 ${
-                          isInvalid("name") ? "border-red-400" : "border-ink/10"
-                        }`}
+                        className="mt-2 block h-12 w-full rounded-2xl border border-ink/10 bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25"
                       />
-                      {isInvalid("name") && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
@@ -499,41 +500,36 @@ export default function ContactSection() {
                         id="contact-email"
                         name="email"
                         type="email"
-                        value={form.email}
+                        value={formData.email}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         placeholder="you@example.com"
                         autoCapitalize="none"
                         autoCorrect="off"
-                        className={`mt-2 block h-12 w-full rounded-2xl border bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25 ${
-                          isInvalid("email") ? "border-red-400" : "border-ink/10"
-                        }`}
+                        className="mt-2 block h-12 w-full rounded-2xl border border-ink/10 bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25"
                       />
-                      {isInvalid("email") && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label htmlFor="contact-phone" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
                         Phone <span className="text-coral">*</span>
                       </label>
                       <div className="mt-2 flex gap-2">
-                        <CountryCodeSelect value={countryCode} onChange={setCountryCode} />
+                        <CountryCodeSelect
+                          value={formData.countryCode}
+                          onChange={(dial) => setFormData((prev) => ({ ...prev, countryCode: dial }))}
+                        />
                         <input
                           id="contact-phone"
                           name="phone"
                           type="tel"
                           inputMode="numeric"
-                          value={form.phone}
+                          value={formData.phone}
                           onChange={handleChange}
-                          onBlur={handleBlur}
                           placeholder="10-digit number"
                           maxLength={10}
                           autoComplete="tel-national"
-                          className={`block h-12 w-full min-w-0 rounded-2xl border bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25 ${
-                            isInvalid("phone") ? "border-red-400" : "border-ink/10"
-                          }`}
+                          className="block h-12 w-full min-w-0 rounded-2xl border border-ink/10 bg-[#f7f6f2] px-4 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25"
                         />
                       </div>
-                      {isInvalid("phone") && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
                     </div>
                     <div className="sm:col-span-2">
                       <label htmlFor="contact-message" className="font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
@@ -543,31 +539,29 @@ export default function ContactSection() {
                         id="contact-message"
                         name="message"
                         rows={5}
-                        value={form.message}
+                        value={formData.message}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         placeholder="Tell us about your idea..."
                         autoCapitalize="sentences"
-                        className={`mt-2 block w-full resize-none rounded-2xl border bg-[#f7f6f2] px-4 py-3 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25 ${
-                          isInvalid("message") ? "border-red-400" : "border-ink/10"
-                        }`}
+                        className="mt-2 block w-full resize-none rounded-2xl border border-ink/10 bg-[#f7f6f2] px-4 py-3 text-base outline-none transition-colors focus:border-coral placeholder:text-ink/25"
                       />
-                      {isInvalid("message") && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
                     </div>
                   </div>
                   <div className="group mt-6 flex items-center gap-2">
                     <button
                       type="submit"
+                      disabled={loading}
                       onClick={(e) => {
                         animate(e.currentTarget, { scale: [1, 0.94, 1], duration: 300, easing: "easeOutCubic" });
                       }}
-                      className="cursor-pointer rounded-full border border-ink/10 bg-[#f7f6f2] px-5 py-3 text-sm font-semibold transition-colors duration-200 hover:border-coral hover:bg-coral hover:text-white focus-visible:outline-2 focus-visible:outline-coral"
+                      className="cursor-pointer rounded-full border border-ink/10 bg-[#f7f6f2] px-5 py-3 text-sm font-semibold transition-colors duration-200 hover:border-coral hover:bg-coral hover:text-white focus-visible:outline-2 focus-visible:outline-coral disabled:opacity-50"
                     >
-                      Send message
+                      {loading ? "Sending..." : "Send message"}
                     </button>
                     <button
                       type="submit"
-                      className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-ink/10 bg-[#f7f6f2] transition-colors duration-200 group-hover:border-coral group-hover:bg-coral group-hover:text-white focus-visible:outline-2 focus-visible:outline-coral"
+                      disabled={loading}
+                      className="flex size-11 cursor-pointer items-center justify-center rounded-full border border-ink/10 bg-[#f7f6f2] transition-colors duration-200 group-hover:border-coral group-hover:bg-coral group-hover:text-white focus-visible:outline-2 focus-visible:outline-coral disabled:opacity-50"
                       aria-label="Send message"
                     >
                       <PaperAirplaneIcon className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:rotate-[-45deg]" aria-hidden="true" />
