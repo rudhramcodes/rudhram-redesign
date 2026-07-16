@@ -37,4 +37,5 @@ jobs:
           "
 
       - name: Purge LiteSpeed cache
-        run: curl -s -o /dev/null -H 'X-LiteSpeed-Purge: *' 'https://rudhramenterprises.com/'
+        run: |
+          curl -s -o /dev/null -H 'X-LiteSpeed-Purge: *' 'https://rudhramenterprises.com/'
