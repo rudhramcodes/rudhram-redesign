@@ -35,3 +35,6 @@ jobs:
             open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -p ${{ secrets.FTP_PORT }} ${{ secrets.FTP_HOST }};
             mirror -R --delete --verbose dist/ public_html/
           "
+
+      - name: Purge LiteSpeed cache
+        run: curl -s -o /dev/null -H "X-LiteSpeed-Purge: *" "https://rudhramenterprises.com/"
