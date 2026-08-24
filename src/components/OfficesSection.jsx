@@ -11,7 +11,7 @@ export default function OfficesSection() {
   const [focus, setFocus] = useState(0);
 
   return (
-    <section id="offices" className="overflow-hidden bg-[#f7f6f2] px-5 py-14 text-ink sm:px-8 md:py-20 lg:px-14">
+    <section id="offices" className="overflow-hidden bg-[#f7f6f2] px-5 py-14 text-ink sm:px-8 min-h-[600px] md:py-20 lg:px-14">
       <div className="mx-auto grid max-w-[1160px] items-center gap-9 md:grid-cols-[minmax(360px,1fr)_minmax(390px,0.9fr)] md:gap-12 lg:gap-16">
         <div className="relative mx-auto aspect-[8/7] w-full max-w-[560px]">
           <OfficeGlobe focus={focus} onSelect={setFocus} className="size-full" />
