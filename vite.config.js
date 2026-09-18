@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/api': 'https://rudhram-api.onrender.com',
+      '/api': 'http://194.238.19.57:5000',
     },
   },
 })
