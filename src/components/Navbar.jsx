@@ -8,6 +8,11 @@ import { stagger, waapi } from "animejs";
 import { Link } from "react-router-dom";
 import SocialIcon from "./SocialIcon";
 
+const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
+const EASE_IN_OUT = "cubic-bezier(0.65, 0, 0.35, 1)";
+const EASE_IN = "cubic-bezier(0.32, 0, 0.67, 0)";
+const EASE_TAP = "cubic-bezier(0.25, 1, 0.5, 1)";
+
 const navItems = [
   ["Home", "/"],
   ["Business", "/business"],
@@ -41,6 +46,12 @@ export default function Navbar() {
   const [desktopAboutOpen, setDesktopAboutOpen] = useState(false);
   const [linksHidden, setLinksHidden] = useState(false);
 
+  const aboutOpenRef = useRef(aboutOpen);
+
+  useEffect(() => {
+    aboutOpenRef.current = aboutOpen;
+  }, [aboutOpen]);
+
   useEffect(() => {
     const update = () => {
       const next = window.scrollY > 100;
@@ -64,7 +75,7 @@ export default function Navbar() {
       width: [`${nav.getBoundingClientRect().width}px`, `${targetWidth}px`],
       delay: scrolled ? 220 : 0,
       duration: scrolled ? 560 : 680,
-      ease: "inOut(4)",
+      ease: EASE_IN_OUT,
     });
     nav.style.width = `${targetWidth}px`;
 
@@ -82,7 +93,7 @@ export default function Navbar() {
         : ["translateY(16px)", "translateY(0)"],
       delay: scrolled ? 0 : 700,
       duration: scrolled ? 400 : 420,
-      ease: scrolled ? "inOut(3)" : "out(4)",
+      ease: scrolled ? EASE_IN_OUT : EASE_OUT,
     });
     links.style.opacity = scrolled ? "0" : "1";
     links.style.transform = scrolled ? "translateY(10px)" : "translateY(0)";
@@ -101,7 +112,7 @@ export default function Navbar() {
         : ["translateX(0)", "translateX(20px)"],
       delay: scrolled ? 240 : 0,
       duration: scrolled ? 380 : 220,
-      ease: "out(3)",
+      ease: EASE_OUT,
     });
     btn.style.opacity = scrolled ? "1" : "0";
     btn.style.transform = scrolled ? "translateX(0)" : "translateX(20px)";
@@ -114,7 +125,8 @@ export default function Navbar() {
       const timer = setTimeout(() => setLinksHidden(true), 400);
       return () => clearTimeout(timer);
     }
-    setLinksHidden(false);
+    const timer = setTimeout(() => setLinksHidden(false), 0);
+    return () => clearTimeout(timer);
   }, [scrolled]);
 
   useEffect(() => {
@@ -129,7 +141,7 @@ export default function Navbar() {
       opacity: isOpen ? [0, 1] : [1, 0],
       delay: isOpen ? 120 : 0,
       duration: isOpen ? 400 : 260,
-      ease: isOpen ? "out(4)" : "in(3)",
+      ease: isOpen ? EASE_OUT : EASE_IN,
     });
     panel.style.height = `${targetHeight}px`;
     panel.style.opacity = isOpen ? "1" : "0";
@@ -144,7 +156,7 @@ export default function Navbar() {
       transform: ["translateY(14px)", "translateY(0)"],
       delay: stagger(40, { start: 200 }),
       duration: 320,
-      ease: "out(4)",
+      ease: EASE_OUT,
     });
 
     const closeOnEscape = (e) => { if (e.key === "Escape") { setDesktopMenuOpen(false); setDesktopAboutOpen(false); } };
@@ -165,7 +177,7 @@ export default function Navbar() {
     const anim = waapi.animate(panel, {
       height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
       duration: 280,
-      ease: "out(4)",
+      ease: EASE_OUT,
     });
     panel.style.height = `${targetHeight}px`;
     return () => anim.cancel();
@@ -189,20 +201,35 @@ export default function Navbar() {
     };
   }, [desktopMenuOpen]);
 
+  const getMobilePanelHeight = (isMenuOpen, isAboutOpen) => {
+    if (!isMenuOpen) return 64;
+    const content = mobileContentRef.current;
+    if (!content) return 64;
+
+    const viewportH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const maxAllowedHeight = Math.max(200, viewportH - 36);
+
+    const submenu = mobileAboutRef.current;
+    const targetSubmenuH = isAboutOpen && submenu ? submenu.scrollHeight : 0;
+    const currentSubmenuH = submenu ? submenu.getBoundingClientRect().height : 0;
+    const diff = targetSubmenuH - currentSubmenuH;
+
+    const expectedContentH = content.scrollHeight + diff;
+    return Math.min(62 + expectedContentH, maxAllowedHeight);
+  };
+
   useEffect(() => {
     const panel = mobileRef.current;
     const content = mobileContentRef.current;
-    if (window.innerWidth >= 768) return undefined;
+    if (!panel || !content || window.innerWidth >= 768) return undefined;
 
-    const targetHeight = menuOpen
-      ? Math.min(62 + content.scrollHeight, window.innerHeight - 64)
-      : 64;
+    const targetHeight = getMobilePanelHeight(menuOpen, aboutOpenRef.current);
     const panelAnimation = waapi.animate(panel, {
       height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
       borderRadius: menuOpen ? ["18px", "22px"] : ["22px", "18px"],
-      delay: menuOpen ? 0 : 200,
-      duration: menuOpen ? 720 : 560,
-      ease: "inOut(4)",
+      delay: menuOpen ? 0 : 140,
+      duration: menuOpen ? 420 : 320,
+      ease: EASE_OUT,
     });
     panel.style.height = `${targetHeight}px`;
     panel.style.borderRadius = menuOpen ? "22px" : "18px";
@@ -210,14 +237,14 @@ export default function Navbar() {
     const contentAnimation = waapi.animate(content, {
       opacity: menuOpen ? [0, 1] : [1, 0],
       transform: menuOpen
-        ? ["translateY(18px)", "translateY(0)"]
-        : ["translateY(0)", "translateY(12px)"],
-      delay: menuOpen ? 740 : 0,
-      duration: menuOpen ? 440 : 180,
-      ease: menuOpen ? "out(4)" : "inOut(3)",
+        ? ["translateY(12px)", "translateY(0)"]
+        : ["translateY(0)", "translateY(8px)"],
+      delay: menuOpen ? 100 : 0,
+      duration: menuOpen ? 260 : 160,
+      ease: menuOpen ? EASE_OUT : EASE_IN_OUT,
     });
     content.style.opacity = menuOpen ? "1" : "0";
-    content.style.transform = menuOpen ? "translateY(0)" : "translateY(12px)";
+    content.style.transform = menuOpen ? "translateY(0)" : "translateY(8px)";
 
     if (!menuOpen) {
       return () => {
@@ -230,16 +257,14 @@ export default function Navbar() {
     const closeOnEscape = (event) => event.key === "Escape" && setMenuOpen(false);
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", closeOnEscape);
-    const itemsAnimation = waapi.animate(
-      mobileRef.current.querySelectorAll("[data-mobile-item]"),
-      {
-        opacity: [0, 1],
-        transform: ["translateY(16px)", "translateY(0)"],
-        delay: stagger(42, { start: 760 }),
-        duration: 420,
-        ease: "out(4)",
-      },
-    );
+    const items = panel.querySelectorAll("[data-mobile-item]");
+    const itemsAnimation = waapi.animate(items, {
+      opacity: [0, 1],
+      transform: ["translateY(12px)", "translateY(0)"],
+      delay: stagger(30, { start: 120 }),
+      duration: 280,
+      ease: EASE_OUT,
+    });
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -252,28 +277,66 @@ export default function Navbar() {
 
   useEffect(() => {
     const submenu = mobileAboutRef.current;
+    if (!submenu || window.innerWidth >= 768) return;
+
     const targetHeight = aboutOpen ? submenu.scrollHeight : 0;
     const animation = waapi.animate(submenu, {
       height: [`${submenu.getBoundingClientRect().height}px`, `${targetHeight}px`],
       opacity: aboutOpen ? [0, 1] : [1, 0],
       transform: aboutOpen
-        ? ["translateY(10px)", "translateY(0)"]
-        : ["translateY(0)", "translateY(8px)"],
-      duration: aboutOpen ? 360 : 220,
-      ease: aboutOpen ? "out(4)" : "inOut(3)",
+        ? ["translateY(6px)", "translateY(0)"]
+        : ["translateY(0)", "translateY(6px)"],
+      duration: 280,
+      ease: EASE_OUT,
     });
     submenu.style.height = `${targetHeight}px`;
     submenu.style.opacity = aboutOpen ? "1" : "0";
-    submenu.style.transform = aboutOpen ? "translateY(0)" : "translateY(8px)";
-    return () => animation.cancel();
-  }, [aboutOpen]);
+    submenu.style.transform = aboutOpen ? "translateY(0)" : "translateY(6px)";
+
+    let panelAnimation;
+    if (menuOpen && mobileRef.current) {
+      const panel = mobileRef.current;
+      const targetPanelHeight = getMobilePanelHeight(true, aboutOpen);
+      panelAnimation = waapi.animate(panel, {
+        height: [`${panel.getBoundingClientRect().height}px`, `${targetPanelHeight}px`],
+        duration: 280,
+        ease: EASE_OUT,
+      });
+      panel.style.height = `${targetPanelHeight}px`;
+    }
+
+    return () => {
+      animation.cancel();
+      if (panelAnimation) panelAnimation.cancel();
+    };
+  }, [aboutOpen, menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMenuOpen(false);
+        return;
+      }
+      const panel = mobileRef.current;
+      if (!panel) return;
+      const targetHeight = getMobilePanelHeight(true, aboutOpen);
+      panel.style.height = `${targetHeight}px`;
+    };
+    window.addEventListener("resize", handleResize);
+    window.visualViewport?.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.visualViewport?.removeEventListener("resize", handleResize);
+    };
+  }, [menuOpen, aboutOpen]);
 
   const animateTap = (event) => {
     const el = event.currentTarget;
     waapi.animate(el, {
       transform: ["scale(1)", "scale(0.93)", "scale(1)"],
-      duration: 200,
-      ease: "out(3)",
+      duration: 180,
+      ease: EASE_TAP,
     });
   };
 
@@ -283,7 +346,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5 pt-[max(0.75rem,env(safe-area-inset-top))]">
       <nav
         ref={desktopRef}
         aria-label="Primary navigation"
@@ -309,10 +372,10 @@ export default function Navbar() {
             <div className="group relative">
               <Link to="/about-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                 About Us
-                <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true" />
+                <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180 transition-transform duration-200" aria-hidden="true" />
               </Link>
-              <div className="pointer-events-none invisible absolute left-0 top-full w-52 translate-y-2 pt-2 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0">
-                <div className="overflow-hidden border border-muted/30 rounded-2xl bg-cloud text-night">
+              <div className="pointer-events-none invisible absolute left-0 top-full w-52 translate-y-2 pt-2 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200">
+                <div className="overflow-hidden border border-muted/30 rounded-2xl bg-cloud text-night shadow-lg">
                   {aboutItems.map(([label, href], index) => (
                     <Fragment key={href}>
                       <Link to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="block w-[95%] mx-auto px-4 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
@@ -367,7 +430,7 @@ export default function Navbar() {
               <div data-desktop-item>
                 <button type="button" onClick={() => setDesktopAboutOpen((v) => !v)} onPointerDown={animateTap} aria-expanded={desktopAboutOpen} className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                   About Us
-                  <ChevronDownIcon className={`size-4 ${desktopAboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+                  <ChevronDownIcon className={`size-4 transition-transform duration-200 ${desktopAboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
                 </button>
                 <div className={`${desktopAboutOpen ? '' : 'hidden'} pl-4 pt-1`}>
                   {aboutItems.map(([label, href]) => (
@@ -392,7 +455,7 @@ export default function Navbar() {
         ref={mobileRef}
         aria-label="Mobile navigation"
         style={{ height: "64px", borderRadius: "18px" }}
-        className="mx-auto flex w-[calc(100%_-_16px)] flex-col overflow-hidden border border-muted/30 bg-cloud text-night md:hidden"
+        className="mx-auto flex w-[calc(100%_-_16px)] flex-col overflow-hidden border border-muted/30 bg-cloud text-night shadow-lg md:hidden"
       >
         <div className="flex h-[62px] shrink-0 items-center px-3">
           <Link to="/" onClick={closeMenu} onPointerDown={animateTap} className="flex h-11 items-center rounded-lg px-2 focus-visible:outline-3 focus-visible:outline-coral">
@@ -406,7 +469,7 @@ export default function Navbar() {
             onPointerDown={animateTap}
             className="ml-auto flex size-10 cursor-pointer items-center justify-center rounded-xl bg-muted/30 text-dark hover:bg-white focus-visible:outline-3 focus-visible:outline-coral"
           >
-            {menuOpen ? <XMarkIcon className="size-8" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
+            {menuOpen ? <XMarkIcon className="size-7" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
           </button>
         </div>
 
@@ -414,30 +477,31 @@ export default function Navbar() {
           inert={!menuOpen}
           aria-hidden={!menuOpen}
           ref={mobileContentRef}
-          style={{ opacity: 0, transform: "translateY(12px)" }}
-          className={`flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-5 ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+          data-lenis-prevent
+          style={{ opacity: 0, transform: "translateY(8px)" }}
+          className={`flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 pb-6 touch-pan-y [-webkit-overflow-scrolling:touch] ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
         >
-          <div className="mobile-menu-links mt-5 flex flex-col items-start">
+          <div className="mobile-menu-links mt-4 flex flex-col items-start gap-0.5">
             {navItems.slice(0, 1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
                 {label}
               </Link>
             ))}
 
-            <button type="button" onClick={() => setAboutOpen((value) => !value)} onPointerDown={animateTap} data-mobile-item aria-expanded={aboutOpen} className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+            <button type="button" onClick={() => setAboutOpen((value) => !value)} onPointerDown={animateTap} data-mobile-item aria-expanded={aboutOpen} className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
               About Us
-              <ChevronDownIcon className={`size-5 ${aboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+              <ChevronDownIcon className={`size-5 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
             </button>
             <div
               ref={mobileAboutRef}
               inert={!aboutOpen}
               aria-hidden={!aboutOpen}
-              style={{ height: 0, opacity: 0, transform: "translateY(8px)" }}
+              style={{ height: 0, opacity: 0, transform: "translateY(6px)" }}
               className="w-full overflow-hidden"
             >
               <div className="my-2 border-y border-muted/30">
                 {aboutItems.map(([label, href]) => (
-                  <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} className="block border-b border-muted/30 px-1 py-3 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
+                  <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} className="block border-b border-muted/30 px-1 py-2.5 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
                     {label}
                   </Link>
                 ))}
@@ -445,15 +509,15 @@ export default function Navbar() {
             </div>
 
             {navItems.slice(1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
                 {label}
               </Link>
             ))}
           </div>
 
-          <div className="mobile-menu-footer mt-auto flex flex-col items-center pt-6" data-mobile-item>
+          <div className="mobile-menu-footer mt-auto flex flex-col items-center pt-5 pb-[max(0.5rem,env(safe-area-inset-bottom))]" data-mobile-item>
             <p className="text-center text-sm leading-6 text-ink">Mumbai · Surat · Delhi</p>
-            <div className="mt-4 flex items-center justify-center gap-3" aria-label="Rudhram social media">
+            <div className="mt-3 flex items-center justify-center gap-3" aria-label="Rudhram social media">
               {socialItems.map(([label, href]) => (
                 <a
                   key={href}

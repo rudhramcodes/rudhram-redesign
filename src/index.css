@@ -76,20 +76,29 @@ body {
   animation: venture-progress linear forwards;
 }
 
+@media (max-width: 767px) {
+  .mobile-menu-links > a,
+  .mobile-menu-links > button {
+    font-size: 28px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
 @media (max-height: 720px) and (max-width: 767px) {
   .mobile-menu-links {
-    margin-top: 20px;
+    margin-top: 14px;
   }
 
   .mobile-menu-links > a,
   .mobile-menu-links > button {
-    font-size: 28px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    font-size: 24px;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
 
   .mobile-menu-footer {
-    padding-top: 20px;
+    padding-top: 14px;
   }
 
   .mobile-menu-images {

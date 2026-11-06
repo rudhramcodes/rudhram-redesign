@@ -76,7 +76,7 @@ function useScrollIn(ref) {
 
     const animateEl = (el, from, to, opts = {}) => {
       const { delay = 0, duration = 700 } = opts;
-      const a = waapi.animate(el, { ...from, ...to, duration, delay, ease: "out(4)" });
+      const a = waapi.animate(el, { ...from, ...to, duration, delay, ease: "cubic-bezier(0.16, 1, 0.3, 1)" });
       Object.assign(el.style, Object.keys(to).reduce((acc, key) => {
         acc[key] = to[key];
         return acc;
@@ -139,7 +139,7 @@ function useScrollIn(ref) {
             transform: ["translateY(12px)", "translateY(0)"],
             duration: 500,
             delay: stagger(45, { start: 300 }),
-            ease: "out(4)",
+            ease: "cubic-bezier(0.16, 1, 0.3, 1)",
           });
           Array.from(links).forEach((link) => {
             link.style.opacity = "1";
@@ -205,14 +205,14 @@ export default function Footer() {
         ? ["translateY(-4px)", "translateY(0)"]
         : ["translateY(0)", "translateY(-4px)"],
       duration: 240,
-      ease: "out(3)",
+      ease: "cubic-bezier(0.33, 1, 0.68, 1)",
     });
     const chevronAnimation = waapi.animate(chevron, {
       transform: aboutOpen
         ? ["rotate(0deg)", "rotate(180deg)"]
         : ["rotate(180deg)", "rotate(0deg)"],
       duration: 240,
-      ease: "out(3)",
+      ease: "cubic-bezier(0.33, 1, 0.68, 1)",
     });
 
     submenu.style.height = `${height}px`;

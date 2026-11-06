@@ -36,7 +36,7 @@ export default function VenturesSection() {
         transform: ["translateY(18px)", "translateY(0)"],
         delay: stagger(65),
         duration: 520,
-        ease: "out(4)",
+        ease: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     );
     return () => animation.cancel();

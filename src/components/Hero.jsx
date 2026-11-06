@@ -32,7 +32,7 @@ export default function Hero({ current, playing, onSelect, onNext, onTogglePlayi
       opacity: [0, 1],
       transform: ["translateY(24px)", "translateY(0)"],
       duration: 620,
-      ease: "out(4)",
+      ease: "cubic-bezier(0.16, 1, 0.3, 1)",
     });
     return () => animation.cancel();
   }, [current]);
