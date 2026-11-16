@@ -1,8 +1,27 @@
+# Custom 404 Error Document
+ErrorDocument 404 /404.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+
+  # 1. If the requested file or directory exists, serve it directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # 2. Add trailing slash to directories if missing (e.g., /business -> /business/)
+  RewriteCond %{REQUEST_FILENAME}/ -d
+  RewriteRule ^(.*[^/])$ /$1/ [R=301,L]
+
+  # 3. Clean URL fallback if a corresponding .html file exists
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^([^.]+)$ /$1.html [L]
+
+  # 4. Clean URL fallback if a directory/index.html exists
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^([^.]+)$ /$1/index.html [L]
+
+  # 5. All other non-existent routes trigger 404
+  RewriteRule ^ - [R=404,L]
 </IfModule>
