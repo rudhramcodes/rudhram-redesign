@@ -1,6 +1,8 @@
+"use client";
+
 import { ArrowDownIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { motion, useReducedMotion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -153,8 +155,8 @@ function Closing() {
       <Reveal className={`${pageContainer} grid gap-12 md:grid-cols-12 md:items-end`}>
         <p className="font-display text-5xl leading-[0.95] tracking-[-0.05em] sm:text-6xl md:col-span-8 lg:text-8xl">Built to become a <span className="italic">masterpiece.</span></p>
         <div className="flex flex-col items-start gap-4 md:col-span-4 md:items-end">
-          <Link to="/about-rudhram" className="group flex items-center gap-3 text-sm font-semibold">Understand the system <span className="flex size-10 items-center justify-center rounded-full border border-white/50 transition-colors group-hover:bg-white group-hover:text-coral"><ArrowRightIcon className="size-4" aria-hidden="true" /></span></Link>
-          <Link to="/business" className="text-sm text-white/70 underline decoration-white/40 underline-offset-4 hover:text-white">Explore the business</Link>
+          <Link href="/about-rudhram" className="group flex items-center gap-3 text-sm font-semibold">Understand the system <span className="flex size-10 items-center justify-center rounded-full border border-white/50 transition-colors group-hover:bg-white group-hover:text-coral"><ArrowRightIcon className="size-4" aria-hidden="true" /></span></Link>
+          <Link href="/business" className="text-sm text-white/70 underline decoration-white/40 underline-offset-4 hover:text-white">Explore the business</Link>
         </div>
       </Reveal>
     </section>

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRightIcon,
@@ -7,7 +9,7 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ventures } from "../lib/venturesContent";
 
 const slideDuration = 10000;
@@ -92,7 +94,7 @@ export default function VenturesSection() {
                 </a>
               ) : null}
               <Link
-                to="/ventures"
+                href="/ventures"
                 className="inline-flex items-center gap-3 rounded-full border border-white/30 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-night focus-visible:outline-3 focus-visible:outline-white"
               >
                 Explore all ventures

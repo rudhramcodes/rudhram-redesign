@@ -1,6 +1,8 @@
+"use client";
+
 import { ArrowDownIcon, ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { motion, useReducedMotion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FacebookPostCard from "../components/FacebookPostCard";
@@ -129,7 +131,7 @@ function Closing() {
     <section className="bg-coral px-6 py-24 text-white sm:px-10 md:py-32 lg:px-16 lg:py-40">
       <Reveal className={`${pageContainer} grid gap-12 md:grid-cols-12 md:items-end`}>
         <p className="font-display text-5xl leading-[0.95] tracking-[-0.05em] sm:text-6xl md:col-span-8 lg:text-8xl">Meet the story behind the <span className="italic">people.</span></p>
-        <Link to="/we-are-rudhram" className="group flex w-fit items-center gap-3 text-sm font-semibold md:col-span-4 md:justify-self-end">
+        <Link href="/we-are-rudhram" className="group flex w-fit items-center gap-3 text-sm font-semibold md:col-span-4 md:justify-self-end">
           Read We Are Rudhram
           <span className="flex size-10 items-center justify-center rounded-full border border-white/50 transition-colors group-hover:bg-white group-hover:text-coral"><ArrowRightIcon className="size-4" aria-hidden="true" /></span>
         </Link>

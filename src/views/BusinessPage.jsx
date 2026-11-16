@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowDownIcon, ArrowUpRightIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { motion, useReducedMotion } from "framer-motion";
 import Navbar from "../components/Navbar";
