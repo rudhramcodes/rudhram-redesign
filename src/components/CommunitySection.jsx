@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import FacebookPostCard from "./FacebookPostCard";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CheckIcon, ChevronDownIcon, MagnifyingGlassIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
@@ -358,7 +360,10 @@ export default function ContactSection() {
     const errs = validateForm(formData);
     if (errs.length) { setErrors(errs); setLoading(false); return; }
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "https://api.rudhramenterprises.com";
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) ||
+        "https://api.rudhramenterprises.com";
       const res = await axios.post(`${apiUrl}/api/contact`, {
         ...formData,
         botcheck: undefined,

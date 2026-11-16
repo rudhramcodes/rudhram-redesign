@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const storyMoments = [
   {
@@ -90,7 +90,7 @@ export default function OurStorySection() {
               </p>
             </blockquote>
             <Link
-              to="/we-are-rudhram"
+              href="/we-are-rudhram"
               className="group mt-7 inline-flex items-center gap-3 text-sm font-semibold focus-visible:outline-3 focus-visible:outline-coral"
             >
               Read our full story

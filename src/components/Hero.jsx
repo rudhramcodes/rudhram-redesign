@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import { waapi } from "animejs";
 import { slides } from "../lib/slides";

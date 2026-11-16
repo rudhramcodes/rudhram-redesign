@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { facebookEmbed, facebookPost } from "../lib/visionariesContent";
 import SocialIcon from "./SocialIcon";

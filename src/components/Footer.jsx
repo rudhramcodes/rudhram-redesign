@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { waapi, stagger } from "animejs";
 import { useReducedMotion } from "framer-motion";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import SocialIcon from "./SocialIcon";
 
 const pageLinks = [
@@ -33,8 +33,7 @@ const legalLinks = [
 function FooterLink({ href, children }) {
   if (href.startsWith("/")) {
     return (
-      <Link
-        to={href}
+      <Link key={href} href={href}
         className="inline-flex w-fit items-center py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral dark:text-cloud/60 dark:hover:text-coral"
       >
         {children}
@@ -232,122 +231,122 @@ export default function Footer() {
       className="overflow-hidden bg-cloud px-6 pb-7 pt-20 sm:px-10 sm:pb-9 md:pt-28 lg:px-16 dark:bg-night"
     >
       <div className="mx-auto max-w-[1240px]">
-          <div className="grid grid-cols-1 gap-6 py-12 md:grid-cols-2 md:gap-16 md:py-14">
-            <div className="flex flex-col order-1 md:order-2">
-              <div data-animate data-delay="0">
-                <h2 className="text-[7vw] font-medium leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
-                  From uncertainty,
-                  <br />
-                  <span className="text-coral italic font-display font-normal">direction.</span>
-                </h2>
+        <div className="grid grid-cols-1 gap-6 py-12 md:grid-cols-2 md:gap-16 md:py-14">
+          <div className="flex flex-col order-1 md:order-2">
+            <div data-animate data-delay="0">
+              <h2 className="text-[7vw] font-medium leading-[0.98] tracking-tight md:text-right sm:text-[32px] md:text-[36px] lg:text-[40px]">
+                From uncertainty,
+                <br />
+                <span className="text-coral italic font-display font-normal">direction.</span>
+              </h2>
+            </div>
+            <div data-animate data-delay="140" className="mt-12">
+              <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                Get in Touch
+              </p>
+
+              <div className="flex flex-col gap-y-0.5">
+                <FooterLink href="tel:+917285833101">
+                  +91 72858 33101
+                </FooterLink>
+                <FooterLink href="tel:+917284980137">
+                  +91 72849 80137
+                </FooterLink>
               </div>
-              <div data-animate data-delay="140" className="mt-12">
-                <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                  Get in Touch
-                </p>
 
-                <div className="flex flex-col gap-y-0.5">
-                  <FooterLink href="tel:+917285833101">
-                    +91 72858 33101
-                  </FooterLink>
-                  <FooterLink href="tel:+917284980137">
-                    +91 72849 80137
-                  </FooterLink>
-                </div>
-
-                {/* Social */}
-                <div
-                  className="mt-8 flex items-center gap-2.5"
-                  aria-label="Rudhram social media"
-                >
-                  {socials.map(([label, href]) => (
-                    <SocialButton key={href} href={href} label={label} />
-                  ))}
-                </div>
+              {/* Social */}
+              <div
+                className="mt-8 flex items-center gap-2.5"
+                aria-label="Rudhram social media"
+              >
+                {socials.map(([label, href]) => (
+                  <SocialButton key={href} href={href} label={label} />
+                ))}
               </div>
             </div>
+          </div>
 
-            <div className="flex flex-col order-2 md:order-1">
-              <div data-animate data-delay="0">
-                <img
-                  src="/logo.png"
-                  alt="Rudhram"
-                  className="h-10 w-auto object-contain object-left"
-                />
-              </div>
-              <div data-animate data-delay="80" className="mt-12">
-                <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
-                  Explore
-                </p>
-                <nav
-                  data-link-list
-                  aria-label="Footer navigation"
-                  className="flex flex-col gap-y-0.5"
-                >
-                  {pageLinks.slice(0, 1).map(([label, href]) => (
-                    <FooterLink key={href} href={href}>
-                      {label}
-                    </FooterLink>
-                  ))}
-                  <div>
-                    <button
-                      type="button"
-                      aria-controls="footer-about-links"
-                      aria-expanded={aboutOpen}
-                      onClick={() => setAboutOpen((value) => !value)}
-                      className="flex cursor-pointer items-center gap-1.5 py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral focus-visible:outline-2 focus-visible:outline-coral dark:text-cloud/60 dark:hover:text-coral"
-                    >
-                      About Us
-                      <ChevronDownIcon ref={chevronRef} className="size-3.5" aria-hidden="true" />
-                    </button>
-                    <div
-                      ref={aboutRef}
-                      id="footer-about-links"
-                      inert={!aboutOpen}
-                      aria-hidden={!aboutOpen}
-                      className="h-0 overflow-hidden opacity-0"
-                    >
-                      <div className="my-1 w-fit">
-                        {aboutLinks.map(([label, href]) => (
-                          <div key={href}>
-                            <FooterLink href={href}>{label}</FooterLink>
-                          </div>
-                        ))}
-                      </div>
+          <div className="flex flex-col order-2 md:order-1">
+            <div data-animate data-delay="0">
+              <img
+                src="/logo.png"
+                alt="Rudhram"
+                className="h-10 w-auto object-contain object-left"
+              />
+            </div>
+            <div data-animate data-delay="80" className="mt-12">
+              <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+                Explore
+              </p>
+              <nav
+                data-link-list
+                aria-label="Footer navigation"
+                className="flex flex-col gap-y-0.5"
+              >
+                {pageLinks.slice(0, 1).map(([label, href]) => (
+                  <FooterLink key={href} href={href}>
+                    {label}
+                  </FooterLink>
+                ))}
+                <div>
+                  <button
+                    type="button"
+                    aria-controls="footer-about-links"
+                    aria-expanded={aboutOpen}
+                    onClick={() => setAboutOpen((value) => !value)}
+                    className="flex cursor-pointer items-center gap-1.5 py-1 text-sm font-medium text-ink/70 transition-colors duration-200 ease-out hover:text-coral focus-visible:outline-2 focus-visible:outline-coral dark:text-cloud/60 dark:hover:text-coral"
+                  >
+                    About Us
+                    <ChevronDownIcon ref={chevronRef} className="size-3.5" aria-hidden="true" />
+                  </button>
+                  <div
+                    ref={aboutRef}
+                    id="footer-about-links"
+                    inert={!aboutOpen}
+                    aria-hidden={!aboutOpen}
+                    className="h-0 overflow-hidden opacity-0"
+                  >
+                    <div className="my-1 w-fit">
+                      {aboutLinks.map(([label, href]) => (
+                        <div key={href}>
+                          <FooterLink href={href}>{label}</FooterLink>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  {pageLinks.slice(1).map(([label, href]) => (
-                    <FooterLink key={href} href={href}>
-                      {label}
-                    </FooterLink>
-                  ))}
-                </nav>
-              </div>
+                </div>
+                {pageLinks.slice(1).map(([label, href]) => (
+                  <FooterLink key={href} href={href}>
+                    {label}
+                  </FooterLink>
+                ))}
+              </nav>
             </div>
           </div>
+        </div>
 
-          {/* Bottom bar */}
-          <div
-            data-animate
-            data-delay="200"
-            className="flex flex-col gap-4 border-t border-muted/20 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between dark:border-white/10"
-          >
-            <p className="text-ink/60 dark:text-cloud/50">
-              &copy; {new Date().getFullYear()} Rudhram Enterprises Private
-              Limited.
-            </p>
-            <div className="flex gap-6">
-              {legalLinks.map(([label, href]) => (
-                <Link
-                  key={href}
-                  to={href}
-                  className="text-ink/60 underline decoration-current/30 underline-offset-4 transition-colors duration-200 ease-out hover:text-coral dark:text-cloud/50 dark:hover:text-coral"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
+        {/* Bottom bar */}
+        <div
+          data-animate
+          data-delay="200"
+          className="flex flex-col gap-4 border-t border-muted/20 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between dark:border-white/10"
+        >
+          <p className="text-ink/60 dark:text-cloud/50">
+            &copy; {new Date().getFullYear()} Rudhram Enterprises Private
+            Limited.
+          </p>
+          <div className="flex gap-6">
+            {legalLinks.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-ink/60 underline decoration-current/30 underline-offset-4 transition-colors duration-200 ease-out hover:text-coral dark:text-cloud/50 dark:hover:text-coral"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
+        </div>
       </div>
     </footer>
   );

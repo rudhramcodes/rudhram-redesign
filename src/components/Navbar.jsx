@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState, Fragment } from "react";
 import {
   Bars2Icon,
@@ -5,7 +7,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { stagger, waapi } from "animejs";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import SocialIcon from "./SocialIcon";
 
 const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
@@ -354,7 +356,7 @@ export default function Navbar() {
         className="mx-auto hidden flex-col rounded-[20px] border border-muted/30 bg-cloud text-night md:flex"
       >
         <div className="relative flex h-[68px] items-center px-3">
-          <Link to="/" onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="flex h-12 w-32 shrink-0 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-muted/30">
+          <Link href="/" onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="flex h-12 w-32 shrink-0 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-muted/30">
             <img src="/logo.png" alt="Rudhram" className="h-9 w-[116px] object-contain object-left" />
           </Link>
 
@@ -364,13 +366,13 @@ export default function Navbar() {
             className={`ml-auto flex min-w-0 items-center justify-end gap-1 ${linksHidden ? "hidden" : ""}`}
           >
             {navItems.slice(0, 1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                 {label}
               </Link>
             ))}
 
             <div className="group relative">
-              <Link to="/about-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link href="/about-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                 About Us
                 <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180 transition-transform duration-200" aria-hidden="true" />
               </Link>
@@ -378,7 +380,7 @@ export default function Navbar() {
                 <div className="overflow-hidden border border-muted/30 rounded-2xl bg-cloud text-night shadow-lg">
                   {aboutItems.map(([label, href], index) => (
                     <Fragment key={href}>
-                      <Link to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="block w-[95%] mx-auto px-4 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+                      <Link href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="block w-[95%] mx-auto px-4 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                         {label}
                       </Link>
                       {index < aboutItems.length - 1 && (
@@ -391,7 +393,7 @@ export default function Navbar() {
             </div>
 
             {navItems.slice(1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                 {label}
               </Link>
             ))}
@@ -422,7 +424,7 @@ export default function Navbar() {
             <div className="flex flex-col gap-1 border-t border-muted/30 px-5 pb-5 pt-4">
               <span className="font-mono text-[11px] uppercase tracking-widest text-ink/40">Navigation</span>
               {navItems.slice(0, 1).map(([label, href]) => (
-                <Link key={href} to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+                <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                   {label}
                 </Link>
               ))}
@@ -434,7 +436,7 @@ export default function Navbar() {
                 </button>
                 <div className={`${desktopAboutOpen ? '' : 'hidden'} pl-4 pt-1`}>
                   {aboutItems.map(([label, href]) => (
-                    <Link key={href} to={href} onClick={() => { setDesktopMenuOpen(false); setDesktopAboutOpen(false); }} onPointerDown={animateTap} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+                    <Link key={href} href={href} onClick={() => { setDesktopMenuOpen(false); setDesktopAboutOpen(false); }} onPointerDown={animateTap} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                       {label}
                     </Link>
                   ))}
@@ -442,7 +444,7 @@ export default function Navbar() {
               </div>
 
               {navItems.slice(1).map(([label, href]) => (
-                <Link key={href} to={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+                <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
                   {label}
                 </Link>
               ))}
@@ -458,7 +460,7 @@ export default function Navbar() {
         className="mx-auto flex w-[calc(100%_-_16px)] flex-col overflow-hidden border border-muted/30 bg-cloud text-night shadow-lg md:hidden"
       >
         <div className="flex h-[62px] shrink-0 items-center px-3">
-          <Link to="/" onClick={closeMenu} onPointerDown={animateTap} className="flex h-11 items-center rounded-lg px-2 focus-visible:outline-3 focus-visible:outline-coral">
+          <Link href="/" onClick={closeMenu} onPointerDown={animateTap} className="flex h-11 items-center rounded-lg px-2 focus-visible:outline-3 focus-visible:outline-coral">
             <img src="/logo.png" alt="Rudhram" className="h-8 w-[108px] object-contain object-left" />
           </Link>
           <button
@@ -483,7 +485,7 @@ export default function Navbar() {
         >
           <div className="mobile-menu-links mt-4 flex flex-col items-start gap-0.5">
             {navItems.slice(0, 1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
                 {label}
               </Link>
             ))}
@@ -501,7 +503,7 @@ export default function Navbar() {
             >
               <div className="my-2 border-y border-muted/30">
                 {aboutItems.map(([label, href]) => (
-                  <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} className="block border-b border-muted/30 px-1 py-2.5 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
+                  <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} className="block border-b border-muted/30 px-1 py-2.5 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
                     {label}
                   </Link>
                 ))}
@@ -509,7 +511,7 @@ export default function Navbar() {
             </div>
 
             {navItems.slice(1).map(([label, href]) => (
-              <Link key={href} to={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
                 {label}
               </Link>
             ))}

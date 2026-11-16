@@ -1,6 +1,8 @@
+"use client";
+
 import { ArrowDownIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { motion, useReducedMotion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -207,7 +209,7 @@ function Purpose() {
           <p className="font-display text-5xl leading-[0.95] tracking-[-0.05em] sm:text-6xl lg:text-8xl">Growth must lift more than the <span className="italic">company.</span></p>
           <p className="mt-8 max-w-[54ch] text-base leading-8 text-white/80">Through Vrunda Gohil, Vir Trust and Vrundavan Trust, social responsibility remains part of Rudhram’s definition of progress.</p>
         </div>
-        <Link to="/we-are-rudhram" className="group flex w-fit items-center gap-3 text-sm font-semibold md:col-span-4 md:justify-self-end">
+        <Link href="/we-are-rudhram" className="group flex w-fit items-center gap-3 text-sm font-semibold md:col-span-4 md:justify-self-end">
           Meet the people behind the system
           <span className="flex size-10 items-center justify-center rounded-full border border-white/50 transition-colors group-hover:bg-white group-hover:text-coral"><ArrowRightIcon className="size-4" aria-hidden="true" /></span>
         </Link>

@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const SIZE = 15;
 const TILE = 16;
@@ -140,7 +142,7 @@ export default function NotFoundPage() {
       </div>
 
       <Link
-        to="/"
+        href="/"
         className="mt-8 text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500 underline decoration-zinc-700 underline-offset-4 transition-colors hover:text-white"
       >
         Back home
