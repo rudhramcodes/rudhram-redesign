@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDownIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -22,16 +22,14 @@ import {
 } from "../lib/aboutContent";
 
 function Hero() {
-  const reducedMotion = useReducedMotion();
-
   return (
     <section id="about-top" className="flex min-h-svh bg-white px-6 pb-10 pt-32 sm:px-10 md:pb-12 md:pt-40 lg:px-16">
       <div className={`${pageContainer} flex flex-col justify-between`}>
         <div className="grid flex-1 items-center py-12 md:grid-cols-12 md:py-16">
           <motion.h1
             className="max-w-[11ch] text-[clamp(3.6rem,8vw,8.4rem)] font-semibold leading-[0.88] tracking-[-0.07em] md:col-span-11"
-            initial={reducedMotion ? false : { opacity: 0, y: 36 }}
-            animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
             Rudhram is the system behind what comes <span className="font-display font-normal italic text-coral">next.</span>
@@ -39,8 +37,8 @@ function Hero() {
         </div>
         <motion.div
           className="grid gap-6 border-t border-ink/20 pt-6 md:grid-cols-12 md:items-end"
-          initial={reducedMotion ? false : { opacity: 0 }}
-          animate={reducedMotion ? undefined : { opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.45 }}
         >
           <p className="max-w-[54ch] text-sm leading-6 text-ink/65 md:col-span-6 md:text-base md:leading-7">

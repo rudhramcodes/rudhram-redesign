@@ -1,19 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { systemLayers } from "../../lib/businessContent";
 
 export default function SystemLayers() {
-  const reducedMotion = useReducedMotion();
-
   return (
     <div className="mt-20 border-t border-white/20 md:ml-[16.666%] md:mt-28">
       {systemLayers.map((layer, index) => (
         <motion.article
           key={layer.number}
           className="group grid gap-5 border-b border-white/20 py-8 md:grid-cols-10 md:items-baseline md:gap-8 md:py-12"
-          initial={reducedMotion ? false : { opacity: 0, y: 24 }}
-          whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.65, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
         >

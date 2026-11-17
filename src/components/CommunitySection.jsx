@@ -50,8 +50,8 @@ export default function CommunitySection() {
   }, []);
 
   return (
-    <section id="visionaries" className="community-section bg-[#f4f4f4] px-4 py-10 text-ink dark:bg-night dark:text-cloud sm:px-10 flex min-h-0 sm:py-16 md:h-dvh md:min-h-[720px] md:items-center md:py-20 lg:px-14 lg:py-32">
-      <div className="community-container mx-auto w-full max-w-[960px] flex flex-col md:items-center">
+    <section id="visionaries" className="community-section bg-[#f4f4f4] px-6 py-16 text-ink dark:bg-night dark:text-cloud sm:px-10 flex min-h-0 sm:py-20 lg:px-16 lg:py-28">
+      <div className="community-container mx-auto w-full max-w-[1240px] flex flex-col">
         <h2 className="text-[28px] sm:text-[32px] tracking-tight font-medium leading-9 sm:leading-10">Ideas & <span className="font-display text-coral">Insights.</span></h2>
 
         <div className="community-grid mt-6 sm:mt-10 grid gap-4 sm:gap-6 md:grid-cols-12">

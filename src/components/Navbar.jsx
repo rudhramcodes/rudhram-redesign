@@ -34,19 +34,11 @@ const socialItems = [
 ];
 
 export default function Navbar() {
-  const desktopRef = useRef(null);
-  const desktopLinksRef = useRef(null);
-  const desktopDropdownRef = useRef(null);
-  const desktopHamburgerRef = useRef(null);
   const mobileRef = useRef(null);
   const mobileContentRef = useRef(null);
   const mobileAboutRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
-  const [desktopAboutOpen, setDesktopAboutOpen] = useState(false);
-  const [linksHidden, setLinksHidden] = useState(false);
 
   const aboutOpenRef = useRef(aboutOpen);
 
@@ -54,166 +46,21 @@ export default function Navbar() {
     aboutOpenRef.current = aboutOpen;
   }, [aboutOpen]);
 
-  useEffect(() => {
-    const update = () => {
-      const next = window.scrollY > 100;
-      setScrolled(next);
-      if (!next) { setDesktopMenuOpen(false); setDesktopAboutOpen(false); }
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-
-  useEffect(() => {
-    const nav = desktopRef.current;
-    if (window.innerWidth < 768) return;
-
-    const targetWidth = scrolled
-      ? 220
-      : Math.min(900, window.innerWidth - 48);
-
-    const anim = waapi.animate(nav, {
-      width: [`${nav.getBoundingClientRect().width}px`, `${targetWidth}px`],
-      delay: scrolled ? 220 : 0,
-      duration: scrolled ? 560 : 680,
-      ease: EASE_IN_OUT,
-    });
-    nav.style.width = `${targetWidth}px`;
-
-    return () => anim.cancel();
-  }, [scrolled]);
-
-  useEffect(() => {
-    const links = desktopLinksRef.current;
-    if (!links || window.innerWidth < 768) return;
-
-    const anim = waapi.animate(links, {
-      opacity: scrolled ? [1, 0] : [0, 1],
-      transform: scrolled
-        ? ["translateY(0)", "translateY(10px)"]
-        : ["translateY(16px)", "translateY(0)"],
-      delay: scrolled ? 0 : 700,
-      duration: scrolled ? 400 : 420,
-      ease: scrolled ? EASE_IN_OUT : EASE_OUT,
-    });
-    links.style.opacity = scrolled ? "0" : "1";
-    links.style.transform = scrolled ? "translateY(10px)" : "translateY(0)";
-
-    return () => anim.cancel();
-  }, [scrolled]);
-
-  useEffect(() => {
-    const btn = desktopHamburgerRef.current;
-    if (!btn || window.innerWidth < 768) return;
-
-    const anim = waapi.animate(btn, {
-      opacity: scrolled ? [0, 1] : [1, 0],
-      transform: scrolled
-        ? ["translateX(20px)", "translateX(0)"]
-        : ["translateX(0)", "translateX(20px)"],
-      delay: scrolled ? 240 : 0,
-      duration: scrolled ? 380 : 220,
-      ease: EASE_OUT,
-    });
-    btn.style.opacity = scrolled ? "1" : "0";
-    btn.style.transform = scrolled ? "translateX(0)" : "translateX(20px)";
-
-    return () => anim.cancel();
-  }, [scrolled]);
-
-  useEffect(() => {
-    if (scrolled) {
-      const timer = setTimeout(() => setLinksHidden(true), 400);
-      return () => clearTimeout(timer);
-    }
-    const timer = setTimeout(() => setLinksHidden(false), 0);
-    return () => clearTimeout(timer);
-  }, [scrolled]);
-
-  useEffect(() => {
-    const panel = desktopDropdownRef.current;
-    if (!panel || window.innerWidth < 768) return;
-
-    const isOpen = desktopMenuOpen;
-    const targetHeight = isOpen ? panel.scrollHeight : 0;
-
-    const panelAnim = waapi.animate(panel, {
-      height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
-      opacity: isOpen ? [0, 1] : [1, 0],
-      delay: isOpen ? 120 : 0,
-      duration: isOpen ? 400 : 260,
-      ease: isOpen ? EASE_OUT : EASE_IN,
-    });
-    panel.style.height = `${targetHeight}px`;
-    panel.style.opacity = isOpen ? "1" : "0";
-
-    if (!isOpen) {
-      return () => panelAnim.cancel();
-    }
-
-    const items = panel.querySelectorAll("[data-desktop-item]");
-    const itemsAnim = waapi.animate(items, {
-      opacity: [0, 1],
-      transform: ["translateY(14px)", "translateY(0)"],
-      delay: stagger(40, { start: 200 }),
-      duration: 320,
-      ease: EASE_OUT,
-    });
-
-    const closeOnEscape = (e) => { if (e.key === "Escape") { setDesktopMenuOpen(false); setDesktopAboutOpen(false); } };
-    window.addEventListener("keydown", closeOnEscape);
-
-    return () => {
-      panelAnim.cancel();
-      itemsAnim.cancel();
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [desktopMenuOpen]);
-
-  useEffect(() => {
-    const panel = desktopDropdownRef.current;
-    if (!panel || !desktopMenuOpen || window.innerWidth < 768) return;
-
-    const targetHeight = panel.scrollHeight;
-    const anim = waapi.animate(panel, {
-      height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
-      duration: 280,
-      ease: EASE_OUT,
-    });
-    panel.style.height = `${targetHeight}px`;
-    return () => anim.cancel();
-  }, [desktopAboutOpen, desktopMenuOpen]);
-
-  useEffect(() => {
-    if (!desktopMenuOpen || window.innerWidth < 768) return;
-
-    const handleClick = (event) => {
-      if (desktopRef.current && !desktopRef.current.contains(event.target)) {
-        setDesktopMenuOpen(false);
-        setDesktopAboutOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClick);
-    document.addEventListener("touchstart", handleClick, { passive: true });
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("touchstart", handleClick);
-    };
-  }, [desktopMenuOpen]);
-
   const getMobilePanelHeight = (isMenuOpen, isAboutOpen) => {
     if (!isMenuOpen) return 64;
     const content = mobileContentRef.current;
     if (!content) return 64;
 
-    const viewportH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const viewportH = window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
     const maxAllowedHeight = Math.max(200, viewportH - 36);
 
     const submenu = mobileAboutRef.current;
     const targetSubmenuH = isAboutOpen && submenu ? submenu.scrollHeight : 0;
-    const currentSubmenuH = submenu ? submenu.getBoundingClientRect().height : 0;
+    const currentSubmenuH = submenu
+      ? submenu.getBoundingClientRect().height
+      : 0;
     const diff = targetSubmenuH - currentSubmenuH;
 
     const expectedContentH = content.scrollHeight + diff;
@@ -227,7 +74,10 @@ export default function Navbar() {
 
     const targetHeight = getMobilePanelHeight(menuOpen, aboutOpenRef.current);
     const panelAnimation = waapi.animate(panel, {
-      height: [`${panel.getBoundingClientRect().height}px`, `${targetHeight}px`],
+      height: [
+        `${panel.getBoundingClientRect().height}px`,
+        `${targetHeight}px`,
+      ],
       borderRadius: menuOpen ? ["18px", "22px"] : ["22px", "18px"],
       delay: menuOpen ? 0 : 140,
       duration: menuOpen ? 420 : 320,
@@ -256,7 +106,8 @@ export default function Navbar() {
     }
 
     const previousOverflow = document.body.style.overflow;
-    const closeOnEscape = (event) => event.key === "Escape" && setMenuOpen(false);
+    const closeOnEscape = (event) =>
+      event.key === "Escape" && setMenuOpen(false);
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", closeOnEscape);
     const items = panel.querySelectorAll("[data-mobile-item]");
@@ -283,7 +134,10 @@ export default function Navbar() {
 
     const targetHeight = aboutOpen ? submenu.scrollHeight : 0;
     const animation = waapi.animate(submenu, {
-      height: [`${submenu.getBoundingClientRect().height}px`, `${targetHeight}px`],
+      height: [
+        `${submenu.getBoundingClientRect().height}px`,
+        `${targetHeight}px`,
+      ],
       opacity: aboutOpen ? [0, 1] : [1, 0],
       transform: aboutOpen
         ? ["translateY(6px)", "translateY(0)"]
@@ -300,7 +154,10 @@ export default function Navbar() {
       const panel = mobileRef.current;
       const targetPanelHeight = getMobilePanelHeight(true, aboutOpen);
       panelAnimation = waapi.animate(panel, {
-        height: [`${panel.getBoundingClientRect().height}px`, `${targetPanelHeight}px`],
+        height: [
+          `${panel.getBoundingClientRect().height}px`,
+          `${targetPanelHeight}px`,
+        ],
         duration: 280,
         ease: EASE_OUT,
       });
@@ -348,39 +205,59 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5 pt-[max(0.75rem,env(safe-area-inset-top))]">
+    <header className="fixed inset-x-0 top-0 z-50 px-6 pt-3 sm:px-10 lg:px-16 sm:pt-5 pt-[max(0.75rem,env(safe-area-inset-top))]">
       <nav
-        ref={desktopRef}
         aria-label="Primary navigation"
-        style={{ width: "min(900px, calc(100vw - 48px))" }}
-        className="mx-auto hidden flex-col rounded-[20px] border border-muted/30 bg-cloud text-night md:flex"
+        className="mx-auto hidden w-full max-w-[1240px] flex-col rounded-[20px] border border-muted/30 bg-cloud text-night md:flex"
       >
-        <div className="relative flex h-[68px] items-center px-3">
-          <Link href="/" onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="flex h-12 w-32 shrink-0 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-muted/30">
+        <div className="relative flex h-[68px] items-center px-4">
+          {/* <Link  className="flex h-12 w-32 shrink-0 items-center rounded-xl px-2 focus-visible:outline-3 focus-visible:outline-muted/30">
             <img src="/logo.png" alt="Rudhram" className="h-9 w-[116px] object-contain object-left" />
+          </Link> */}
+
+          <Link href="/" onPointerDown={animateTap}>
+            <div className="flex items-center gap-2.5 min-w-0">
+              <img src="/logo.png" alt="Rudhram CRM" className="w-5 h-8" />
+              <span className="font-display font-light text-[26px] tracking-tight text-[#895b2a] truncate">
+                Rudhram
+              </span>
+            </div>
           </Link>
 
-          <div
-            ref={desktopLinksRef}
-            style={{ opacity: 0, transform: "translateY(16px)" }}
-            className={`ml-auto flex min-w-0 items-center justify-end gap-1 ${linksHidden ? "hidden" : ""}`}
-          >
+          <div className="ml-auto flex min-w-0 items-center justify-end gap-1">
             {navItems.slice(0, 1).map(([label, href]) => (
-              <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link
+                key={href}
+                href={href}
+                onPointerDown={animateTap}
+                className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30"
+              >
                 {label}
               </Link>
             ))}
 
             <div className="group relative">
-              <Link href="/about-rudhram" aria-haspopup="true" onPointerDown={animateTap} className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link
+                href="/about-rudhram"
+                aria-haspopup="true"
+                onPointerDown={animateTap}
+                className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30"
+              >
                 About Us
-                <ChevronDownIcon className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180 transition-transform duration-200" aria-hidden="true" />
+                <ChevronDownIcon
+                  className="size-3.5 group-hover:rotate-180 group-focus-within:rotate-180 transition-transform duration-200"
+                  aria-hidden="true"
+                />
               </Link>
               <div className="pointer-events-none invisible absolute left-0 top-full w-52 translate-y-2 pt-2 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200">
                 <div className="overflow-hidden border border-muted/30 rounded-2xl bg-cloud text-night shadow-lg">
                   {aboutItems.map(([label, href], index) => (
                     <Fragment key={href}>
-                      <Link href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="block w-[95%] mx-auto px-4 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+                      <Link
+                        href={href}
+                        onPointerDown={animateTap}
+                        className="block w-[95%] mx-auto px-4 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30"
+                      >
                         {label}
                       </Link>
                       {index < aboutItems.length - 1 && (
@@ -393,85 +270,53 @@ export default function Navbar() {
             </div>
 
             {navItems.slice(1).map(([label, href]) => (
-              <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
+              <Link
+                key={href}
+                href={href}
+                onPointerDown={animateTap}
+                className="shrink-0 rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30"
+              >
                 {label}
               </Link>
             ))}
           </div>
-
-          <div ref={desktopHamburgerRef} style={{ opacity: 0, transform: "translateX(20px)" }} className="absolute right-3">
-            <button
-              type="button"
-              onClick={() => { setDesktopAboutOpen(false); setDesktopMenuOpen((value) => !value); }}
-              aria-label={desktopMenuOpen ? "Collapse navigation menu" : "Expand navigation menu"}
-              aria-expanded={desktopMenuOpen}
-              onPointerDown={animateTap}
-              className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30"
-            >
-              {desktopMenuOpen ? <XMarkIcon className="size-6" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
-            </button>
-          </div>
         </div>
-
-        {scrolled && (
-          <div
-            ref={desktopDropdownRef}
-            inert={!desktopMenuOpen}
-            aria-hidden={!desktopMenuOpen}
-            style={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="flex flex-col gap-1 border-t border-muted/30 px-5 pb-5 pt-4">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-ink/40">Navigation</span>
-              {navItems.slice(0, 1).map(([label, href]) => (
-                <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
-                  {label}
-                </Link>
-              ))}
-
-              <div data-desktop-item>
-                <button type="button" onClick={() => setDesktopAboutOpen((v) => !v)} onPointerDown={animateTap} aria-expanded={desktopAboutOpen} className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
-                  About Us
-                  <ChevronDownIcon className={`size-4 transition-transform duration-200 ${desktopAboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
-                </button>
-                <div className={`${desktopAboutOpen ? '' : 'hidden'} pl-4 pt-1`}>
-                  {aboutItems.map(([label, href]) => (
-                    <Link key={href} href={href} onClick={() => { setDesktopMenuOpen(false); setDesktopAboutOpen(false); }} onPointerDown={animateTap} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
-                      {label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {navItems.slice(1).map(([label, href]) => (
-                <Link key={href} href={href} onClick={() => setDesktopMenuOpen(false)} onPointerDown={animateTap} data-desktop-item className="rounded-xl px-3 py-2.5 text-base font-semibold hover:bg-muted/30 focus-visible:outline-3 focus-visible:outline-muted/30">
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </nav>
 
       <nav
         ref={mobileRef}
         aria-label="Mobile navigation"
         style={{ height: "64px", borderRadius: "18px" }}
-        className="mx-auto flex w-[calc(100%_-_16px)] flex-col overflow-hidden border border-muted/30 bg-cloud text-night shadow-lg md:hidden"
+        className="mx-auto flex w-full max-w-[1240px] flex-col overflow-hidden border border-muted/30 bg-cloud text-night shadow-lg md:hidden"
       >
         <div className="flex h-[62px] shrink-0 items-center px-3">
-          <Link href="/" onClick={closeMenu} onPointerDown={animateTap} className="flex h-11 items-center rounded-lg px-2 focus-visible:outline-3 focus-visible:outline-coral">
-            <img src="/logo.png" alt="Rudhram" className="h-8 w-[108px] object-contain object-left" />
+          <Link
+            href="/"
+            onClick={closeMenu}
+            onPointerDown={animateTap}
+            className="flex h-11 items-center rounded-lg px-2 focus-visible:outline-3 focus-visible:outline-coral"
+          >
+            <img
+              src="/logo.png"
+              alt="Rudhram"
+              className="h-8 w-[108px] object-contain object-left"
+            />
           </Link>
           <button
             type="button"
             onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              menuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             aria-expanded={menuOpen}
             onPointerDown={animateTap}
             className="ml-auto flex size-10 cursor-pointer items-center justify-center rounded-xl bg-muted/30 text-dark hover:bg-white focus-visible:outline-3 focus-visible:outline-coral"
           >
-            {menuOpen ? <XMarkIcon className="size-7" aria-hidden="true" /> : <Bars2Icon className="size-6" aria-hidden="true" />}
+            {menuOpen ? (
+              <XMarkIcon className="size-7" aria-hidden="true" />
+            ) : (
+              <Bars2Icon className="size-6" aria-hidden="true" />
+            )}
           </button>
         </div>
 
@@ -485,14 +330,31 @@ export default function Navbar() {
         >
           <div className="mobile-menu-links mt-4 flex flex-col items-start gap-0.5">
             {navItems.slice(0, 1).map(([label, href]) => (
-              <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link
+                key={href}
+                href={href}
+                onClick={closeMenu}
+                onPointerDown={animateTap}
+                data-mobile-item
+                className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral"
+              >
                 {label}
               </Link>
             ))}
 
-            <button type="button" onClick={() => setAboutOpen((value) => !value)} onPointerDown={animateTap} data-mobile-item aria-expanded={aboutOpen} className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+            <button
+              type="button"
+              onClick={() => setAboutOpen((value) => !value)}
+              onPointerDown={animateTap}
+              data-mobile-item
+              aria-expanded={aboutOpen}
+              className="flex cursor-pointer items-center gap-3 rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral"
+            >
               About Us
-              <ChevronDownIcon className={`size-5 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+              <ChevronDownIcon
+                className={`size-5 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
             </button>
             <div
               ref={mobileAboutRef}
@@ -503,7 +365,13 @@ export default function Navbar() {
             >
               <div className="my-2 border-y border-muted/30">
                 {aboutItems.map(([label, href]) => (
-                  <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} className="block border-b border-muted/30 px-1 py-2.5 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral">
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={closeMenu}
+                    onPointerDown={animateTap}
+                    className="block border-b border-muted/30 px-1 py-2.5 text-base font-semibold text-ink last:border-b-0 hover:text-coral focus-visible:outline-3 focus-visible:outline-coral"
+                  >
                     {label}
                   </Link>
                 ))}
@@ -511,15 +379,30 @@ export default function Navbar() {
             </div>
 
             {navItems.slice(1).map(([label, href]) => (
-              <Link key={href} href={href} onClick={closeMenu} onPointerDown={animateTap} data-mobile-item className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral">
+              <Link
+                key={href}
+                href={href}
+                onClick={closeMenu}
+                onPointerDown={animateTap}
+                data-mobile-item
+                className="rounded-lg py-1.5 text-[28px] sm:text-[32px] font-medium leading-[1.15] tracking-normal focus-visible:outline-3 focus-visible:outline-coral"
+              >
                 {label}
               </Link>
             ))}
           </div>
 
-          <div className="mobile-menu-footer mt-auto flex flex-col items-center pt-5 pb-[max(0.5rem,env(safe-area-inset-bottom))]" data-mobile-item>
-            <p className="text-center text-sm leading-6 text-ink">Mumbai · Surat · Delhi</p>
-            <div className="mt-3 flex items-center justify-center gap-3" aria-label="Rudhram social media">
+          <div
+            className="mobile-menu-footer mt-auto flex flex-col items-center pt-5 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+            data-mobile-item
+          >
+            <p className="text-center text-sm leading-6 text-ink">
+              Mumbai · Surat · Delhi
+            </p>
+            <div
+              className="mt-3 flex items-center justify-center gap-3"
+              aria-label="Rudhram social media"
+            >
               {socialItems.map(([label, href]) => (
                 <a
                   key={href}

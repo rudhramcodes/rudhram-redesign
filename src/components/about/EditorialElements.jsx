@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const pageContainer = "mx-auto w-full max-w-[1240px]";
 export const pageSection = "px-6 py-24 sm:px-10 md:py-32 lg:px-16 lg:py-40";
@@ -23,13 +23,11 @@ export function PageMeta({ title, description }) {
 }
 
 export function Reveal({ children, className = "", delay = 0 }) {
-  const reducedMotion = useReducedMotion();
-
   return (
     <motion.div
       className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px" }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >

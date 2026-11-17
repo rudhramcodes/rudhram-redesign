@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { CheckIcon, ChevronDownIcon, MagnifyingGlassIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { animate } from "animejs";
 import axios from "axios";
@@ -313,13 +313,11 @@ function CountryCodeSelect({ value, onChange }) {
 }
 
 function Reveal({ children, className = "", delay = 0 }) {
-  const reducedMotion = useReducedMotion();
-
   return (
     <motion.div
       className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px" }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >

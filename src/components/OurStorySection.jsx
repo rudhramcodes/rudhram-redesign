@@ -29,9 +29,9 @@ export default function OurStorySection() {
     <section
       id="story"
       aria-labelledby="story-heading"
-      className="scroll-mt-20 bg-cloud px-5 py-16 text-night sm:px-10 flex min-h-[720px] md:min-h-dvh md:scroll-mt-24 md:items-center md:py-24 lg:px-14"
+      className="scroll-mt-20 bg-cloud px-6 py-16 text-night sm:px-10 flex min-h-[720px] md:min-h-dvh md:scroll-mt-24 md:items-center md:py-24 lg:px-16"
     >
-      <div className="mx-auto w-full max-w-[1200px]">
+      <div className="mx-auto w-full max-w-[1240px]">
         <header className="grid gap-7 md:grid-cols-12 md:items-end md:gap-8">
           <div className="md:col-span-6">
             <p className="mb-5 text-xs font-semibold uppercase text-coral">Our Story</p>

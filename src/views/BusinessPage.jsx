@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDownIcon, ArrowUpRightIcon, CheckIcon } from "@heroicons/react/24/outline";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SectionCounter from "../components/business/SectionCounter";
@@ -20,13 +20,11 @@ const container = "mx-auto w-full max-w-[1240px]";
 const section = "px-6 py-24 sm:px-10 md:py-32 lg:px-16 lg:py-40";
 
 function Reveal({ children, className = "", delay = 0 }) {
-  const reducedMotion = useReducedMotion();
-
   return (
     <motion.div
       className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px" }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -56,8 +54,6 @@ function SectionIntro({ number, title, children, dark = false }) {
 }
 
 function BusinessHero() {
-  const reducedMotion = useReducedMotion();
-
   return (
     <section
       id="business"
@@ -69,8 +65,8 @@ function BusinessHero() {
         <div className="grid flex-1 items-center py-12 md:grid-cols-12 md:py-16">
           <motion.h1
             className="max-w-[11ch] text-[clamp(3.7rem,8.1vw,8.5rem)] font-semibold leading-[0.88] tracking-[-0.07em] md:col-span-11"
-            initial={reducedMotion ? false : { opacity: 0, y: 36 }}
-            animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
             Ideas need more than <span className="font-display text-coral">belief.</span> They need a system.
@@ -79,8 +75,8 @@ function BusinessHero() {
 
         <motion.div
           className="grid gap-6 border-t border-ink/20 pt-6 md:grid-cols-12 md:items-end"
-          initial={reducedMotion ? false : { opacity: 0 }}
-          animate={reducedMotion ? undefined : { opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.45 }}
         >
           <p className="max-w-[48ch] text-sm leading-6 text-ink/65 md:col-span-5 md:text-base md:leading-7">

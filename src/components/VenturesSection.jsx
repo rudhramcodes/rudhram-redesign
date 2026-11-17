@@ -60,7 +60,7 @@ export default function VenturesSection() {
         <div className="absolute inset-0 bg-night/50" aria-hidden="true" />
       </div>
 
-      <div className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1200px] flex-col px-6 pb-16 pt-32 sm:px-10 md:pb-24 md:pt-36 lg:px-14">
+      <div className="ventures-content relative z-10 mx-auto flex h-full w-full max-w-[1240px] flex-col px-6 pb-16 pt-32 sm:px-10 md:pb-24 md:pt-36 lg:px-16">
         <div className="flex flex-1 items-end justify-between gap-8 pb-10 md:pb-14">
           <div ref={contentRef} aria-live="polite" className="max-w-2xl">
             <p

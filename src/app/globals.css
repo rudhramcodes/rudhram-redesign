@@ -112,10 +112,6 @@ body {
     padding-bottom: 48px;
   }
 
-  .community-container {
-    max-width: 760px;
-  }
-
   .community-grid {
     gap: 12px;
     margin-top: 12px;
